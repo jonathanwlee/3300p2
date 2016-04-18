@@ -1,0 +1,248 @@
+<html>
+<head>
+	<title>Assignment 6 - Jonathan Lee - jwl274 </title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<link href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css"><style>
+	body {
+		font-family:"Lato";
+	}
+
+	.circles_text { font-size: 10px; fill:white;}
+
+	.rect { fill:#e0e0e0;}
+	.points_text_table {font-size:10px;}
+	.club_text_table {font-size:10px;}
+	.bar_table {fill:none;}
+
+	.win{fill:green;}
+	.draw{fill:#e0e0e0;}
+	.loss{fill:red;}
+
+	.win_text{font-size:10px;fill:white;}
+	.draw_text{font-size:10px;fill:black}
+	.loss_text{font-size:10px;fill:white;}
+
+</style>
+
+</head>
+
+<body>
+<h1>The Premier League at a Glance</h1>
+
+<div id="table"></div>
+
+<script>
+var height_table = 600;
+var width_table = 1000;
+var padding_table = 30;
+
+var svg_table = d3.select("#table").append("svg").attr("height", height_table).attr("width", width_table);
+var table; 
+var circles_table,circles_text;
+var club_images_table, club_text_table;
+var points_bar_table,points_text_table,bar_table;
+var win_bar_table,draw_bar_table,loss_bar_table;
+var xScale_points = d3.scale.linear().domain([0,102]).range([0,width_table]);
+
+d3.csv("epl_table.csv", function (error, data) {
+	table = data; 
+	var yScale_circles = d3.scale.ordinal().domain([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]).rangeBands([padding_table,height_table-padding_table]);
+
+	circles_table = svg_table.selectAll(".circles_table").data(table);
+	circles_table.enter().append("circle")
+		.attr("class","circles_table")
+		.attr("r",10)
+		.attr("fill","#2166ac")
+		.attr("cx",padding_table)
+		.attr("cy",function(d) {
+			return yScale_circles(d.position);
+		})
+
+	circles_text = svg_table.selectAll(".circles_text").data(table);
+	circles_text.enter().append("text")
+		.attr("class","circles_text")
+		.attr("text-anchor","middle")
+		.attr("dx",padding_table)
+		.attr("y",function(d) { 	
+			return yScale_circles(d.position);
+		})
+		.attr("dy",".3em")
+		.text(function(d) {return d.position;});
+			
+
+	club_images_table = svg_table.selectAll(".club_images_table").data(table);
+	club_images_table.enter().append("svg:image")
+    	.attr("xlink:href", function(d) {
+    		var club_name = d.club.replace(/\s/g, '');
+    		//console.log( "images/"  + club_name + ".png");
+    		return "images/"  + club_name + ".png"; })
+		.attr("x",padding_table+145)
+		.attr("y",function(d) { return yScale_circles(d.position)-15;})
+		.attr("width",20)
+		.attr("height",20);
+
+	club_text_table = svg_table.selectAll(".club_text_table").data(table);
+	club_text_table.enter().append("text")
+		.attr("class","club_text_table")
+		.attr("x",padding_table+20)
+		.attr("dy",".3em")
+		.attr("y",function(d) { 	
+			return yScale_circles(d.position);
+		})
+		.text(function(d) {return d.club;});
+
+	win_bar_table = svg_table.selectAll(".win_bar_table").data(table);
+	win_bar_table.enter().append("rect")
+		.attr("class",function(d) {return d.club.replace(/\s/g, '') + "_wins" + " win";})
+		.attr("pointer-events","none")
+		.attr("x",padding_table+190)
+		.attr("y",function(d) {return yScale_circles(d.position)-10;})
+		.attr("width", function(d) { 
+			return 0;
+		})
+		.attr("height","15");
+
+	draw_bar_table = svg_table.selectAll(".draw_bar_table").data(table);
+	draw_bar_table.enter().append("rect")
+		.attr("class",function(d) {return d.club.replace(/\s/g, '') + "_draw" + " draw";})
+		.attr("pointer-events","none")
+		.attr("x",function(d) { return padding_table+190+ xScale_points(d.win*3);})
+		.attr("y",function(d) {return yScale_circles(d.position)-10;})
+		.attr("width", function(d) { 
+			return 0;
+		})
+		.attr("height","15");
+
+	loss_bar_table = svg_table.selectAll(".loss_bar_table").data(table);
+	loss_bar_table.enter().append("rect")
+		.attr("class",function(d) {return d.club.replace(/\s/g, '') + "_loss" + " loss";})
+		.attr("pointer-events","none")
+		.attr("x",function(d) { return padding_table+190+xScale_points(d.win*3) + xScale_points(d.drawn);})
+		.attr("y",function(d) {return yScale_circles(d.position)-10;})
+		.attr("width", function(d) { 
+			return 0;
+		})
+		.attr("height","15");
+
+	bar_table = svg_table.selectAll(".bar_table").data(table);
+	bar_table.enter().append("rect")
+		.attr("pointer-events","all")
+		.attr("class","bar_table")
+		.attr("width",function(d) { 	
+			return xScale_points(102);
+		})
+		.attr("height","15")
+		.attr("x",padding_table+190)
+		.attr("y",function(d) { 	
+			return yScale_circles(d.position)-10;
+		})
+		.on("mouseenter",function(d) { 
+			var class_points = "." + d.club.replace(/\s/g, '') + "_points";
+			d3.select(class_points).transition().attr("width",function() {return xScale_points(0);});
+
+			var club_class_name = "." + d.club.replace(/\s/g, '') + "_wins";
+			d3.select(club_class_name).transition().delay(250).attr("width",function() {return xScale_points(d.win*3);});
+			
+			var club_class_draw = "." + d.club.replace(/\s/g, '') + "_draw";
+			d3.select(club_class_draw).transition().delay(300).attr("width",function() {return xScale_points(d.drawn);});
+
+			var club_class_loss = "." + d.club.replace(/\s/g, '') + "_loss";
+			d3.select(club_class_loss).transition().delay(350).attr("width",function() {return xScale_points(d.loss*3);});
+
+			var club_class_win_text = "." + d.club.replace(/\s/g, '') + "_wins_text";
+			d3.select(club_class_win_text).transition().delay(60).attr("visibility","visible");
+
+			var club_class_draw_text = "." + d.club.replace(/\s/g, '') + "_draw_text";
+			d3.select(club_class_draw_text).transition().delay(600).attr("visibility","visible");			
+
+			var club_class_loss_text = "." + d.club.replace(/\s/g, '') + "_loss_text";
+			d3.select(club_class_loss_text).transition().delay(600).attr("visibility","visible");
+			
+		})
+		.on("mouseleave",function(d,i) { 
+			var club_class_name = "." + d.club.replace(/\s/g, '') + "_wins";
+			d3.select(club_class_name).transition().attr("width",function() {return 0;});
+
+			var club_class_draw = "." + d.club.replace(/\s/g, '') + "_draw";
+				d3.select(club_class_draw).transition().attr("width",function() {return 0;});
+
+			var club_class_loss = "." + d.club.replace(/\s/g, '') + "_loss";
+				d3.select(club_class_loss).transition().attr("width",function() {return 0;});
+
+
+			var class_points = "." + d.club.replace(/\s/g, '') + "_points";
+			d3.select(class_points).transition().delay(500).attr("width",xScale_points(d.points));
+
+			var club_class_win_text = "." + d.club.replace(/\s/g, '') + "_wins_text";
+			d3.select(club_class_win_text).transition().delay(250).attr("visibility","hidden");
+
+			var club_class_draw_text = "." + d.club.replace(/\s/g, '') + "_draw_text";
+			d3.select(club_class_draw_text).transition().delay(250).attr("visibility","hidden");			
+
+			var club_class_loss_text = "." + d.club.replace(/\s/g, '') + "_loss_text";
+			d3.select(club_class_loss_text).transition().delay(250).attr("visibility","hidden");			
+
+		})
+
+	points_bar_table = svg_table.selectAll(".points_bar_table").data(table);
+	points_bar_table.enter().append("rect")
+		.attr("pointer-events","none")
+		.attr("class",function(d) {return d.club.replace(/\s/g, '') + "_points rect";})
+		.attr("width",function(d) { 	
+			return xScale_points(d.points);
+		})
+		.attr("height","15")
+		.attr("x",padding_table+190)
+		.attr("y",function(d) { 	
+			return yScale_circles(d.position)-10;
+		});
+
+	win_text_table = svg_table.selectAll("win_text_table").data(table);
+	win_text_table.enter().append("text")
+	.attr("class",function(d) {return d.club.replace(/\s/g, '') + "_wins_text" + " win_text";})
+	.attr("pointer-events","none")
+	.attr("x",function(d) { return padding_table+190;})
+	.attr("y",function(d) {return yScale_circles(d.position);})
+	.attr("visibility","hidden")
+	.text(function(d) {
+		return d.win + " wins"; 
+	});	
+
+	draw_text_table = svg_table.selectAll("draw_text_table").data(table);
+	draw_text_table.enter().append("text")
+	.attr("class",function(d) {return d.club.replace(/\s/g, '') + "_draw_text" + " draw_text";})
+	.attr("pointer-events","none")
+	.attr("x",function(d) { return padding_table+190 + xScale_points(d.win*3);})
+	.attr("y",function(d) {return yScale_circles(d.position);})
+	.attr("visibility","hidden")
+	.text(function(d) {
+		return d.drawn + " draws"; 
+	});	
+
+	loss_text_table = svg_table.selectAll("loss_text_table").data(table);
+	loss_text_table.enter().append("text")
+	.attr("class",function(d) {return d.club.replace(/\s/g, '') + "_loss_text" + " loss_text";})
+	.attr("pointer-events","none")
+	.attr("x",function(d) { return padding_table+190 + xScale_points(d.win*3) + xScale_points(d.drawn);})
+	.attr("y",function(d) {return yScale_circles(d.position);})
+	.attr("visibility","hidden")
+	.text(function(d) {
+		return d.loss + " losses"; 
+	});	
+	/**
+	points_text_table = svg_table.selectAll(".points_text_table").data(table);
+	points_text_table.enter().append("text")
+		.attr("class","points_text_table")
+		.attr("x",padding_table + 195)
+		.attr("y",function(d) { 	
+			return yScale_circles(d.position);
+		})
+		.attr("dy",".3em")
+		.text(function(d) { return d.points;});
+		*/
+});
+</script>
+
+</body>
+
+</html>	
