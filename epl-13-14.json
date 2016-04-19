@@ -10,7 +10,6 @@
       "goals-against":37,
       "goals-dff":"+65",
       "points":86
-      "season":1314
    },
    {
       "rank":2,
@@ -23,7 +22,6 @@
       "goals-against":50,
       "goals-dff":"+51",
       "points":84
-      "season":1314
    },
    {
       "rank":3,
@@ -36,7 +34,6 @@
       "goals-against":27,
       "goals-dff":"+44",
       "points":82
-      "season":1314
    },
    {
       "rank":4,
@@ -49,7 +46,6 @@
       "goals-against":41,
       "goals-dff":"+27",
       "points":79
-      "season":1314
    },
    {
       "rank":5,
@@ -62,7 +58,6 @@
       "goals-against":39,
       "goals-dff":"+22",
       "points":72
-      "season":1314
    },
    {
       "rank":6,
@@ -75,7 +70,6 @@
       "goals-against":51,
       "goals-dff":"+4",
       "points":69
-      "season":1314
    },
    {
       "rank":7,
@@ -88,7 +82,6 @@
       "goals-against":43,
       "goals-dff":"+21",
       "points":64
-      "season":1314
    },
    {
       "rank":8,
@@ -101,7 +94,6 @@
       "goals-against":46,
       "goals-dff":"+8",
       "points":56
-      "season":1314
    },
    {
       "rank":9,
@@ -114,7 +106,6 @@
       "goals-against":52,
       "goals-dff":-7,
       "points":50
-      "season":1314
    },
    {
       "rank":10,
@@ -127,7 +118,6 @@
       "goals-against":59,
       "goals-dff":-16,
       "points":49
-      "season":1314
    },
    {
       "rank":11,
@@ -140,7 +130,6 @@
       "goals-against":48,
       "goals-dff":-15,
       "points":45
-      "season":1314
    },
    {
       "rank":12,
@@ -153,7 +142,6 @@
       "goals-against":54,
       "goals-dff":0,
       "points":42
-      "season":1314
    },
    {
       "rank":13,
@@ -166,7 +154,6 @@
       "goals-against":51,
       "goals-dff":-11,
       "points":40
-      "season":1314
    },
    {
       "rank":14,
@@ -179,7 +166,6 @@
       "goals-against":60,
       "goals-dff":-19,
       "points":38
-      "season":1314
    },
    {
       "rank":15,
@@ -192,7 +178,6 @@
       "goals-against":61,
       "goals-dff":-22,
       "points":38
-      "season":1314
    },
    {
       "rank":16,
@@ -205,7 +190,6 @@
       "goals-against":53,
       "goals-dff":-15,
       "points":37
-      "season":1314
    },
    {
       "rank":17,
@@ -218,7 +202,6 @@
       "goals-against":59,
       "goals-dff":-16,
       "points":36
-      "season":1314
    },
    {
       "rank":18,
@@ -231,7 +214,6 @@
       "goals-against":62,
       "goals-dff":-34,
       "points":33
-      "season":1314
    },
    {
       "rank":19,
@@ -244,7 +226,6 @@
       "goals-against":85,
       "goals-dff":-45,
       "points":32
-      "season":1314
    },
    {
       "rank":20,
@@ -257,6 +238,5 @@
       "goals-against":74,
       "goals-dff":-42,
       "points":30
-      "season":1314
    }
 ]
