@@ -82,14 +82,14 @@ function processData (rows)
 		var home = rows[i].home_team;
 		
 		//Collect relevant data
-		var hs = rows[i].total_shots_home_team, as = rows[i].total_shots_away_team;
-		var hcn = rows[i].corners_home_team, acn = rows[i].corners_away_team;
-		var hcr = rows[i].crosses_home_team, acr = rows[i].crosses_away_team;
-		var hg = rows[i].home_goals, ag = rows[i].away_goals;
-		var hp = rows[i].penalties_home_team, ap = rows[i].penalties_away_team;
+		var hs = parseInt(rows[i].total_shots_home_team), as = parseInt(rows[i].total_shots_away_team);
+		var hcn = parseInt(rows[i].corners_home_team), acn = parseInt(rows[i].corners_away_team);
+		var hcr = parseInt(rows[i].crosses_home_team), acr = parseInt(rows[i].crosses_away_team);
+		var hg = parseInt(rows[i].home_goals), ag = parseInt(rows[i].away_goals);
+		var hp = parseInt(rows[i].penalties_home_team), ap = parseInt(rows[i].penalties_away_team);
 		
 		var a = teamdata.findIndex(function (d){return d.team == away});
-		var h = teamdata.findIndex(function (d){return d.team == away});
+		var h = teamdata.findIndex(function (d){return d.team == home});
 		//Add home/away team if not encountered yet, then append data
 		if (a == -1)
 		{
@@ -99,11 +99,11 @@ function processData (rows)
 		}
 		else
 		{
-			teamdata[a].shots.push(as);
-			teamdata[a].corner.push(acn);
-			teamdata[a].cross.push(acr);
-			teamdata[a].goals.push(ag);
-			teamdata[a].pens.push(ap);	
+			teamdata[a].shots.push(as+teamdata[a].shots[teamdata[a].shots.length-1]);
+			teamdata[a].corner.push(acn+teamdata[a].corner[teamdata[a].corner.length-1]);
+			teamdata[a].cross.push(acr+teamdata[a].cross[teamdata[a].cross.length-1]);
+			teamdata[a].goals.push(ag+teamdata[a].goals[teamdata[a].goals.length-1]);
+			teamdata[a].pens.push(ap+teamdata[a].pens[teamdata[a].pens.length-1]);	
 		}
 		
 		if (h == -1)
@@ -114,11 +114,11 @@ function processData (rows)
 		}
 		else
 		{
-			teamdata[h].shots.push(hs);
-			teamdata[h].corner.push(hcn);
-			teamdata[h].cross.push(hcr);
-			teamdata[h].goals.push(hg);
-			teamdata[h].pens.push(hp);	
+			teamdata[h].shots.push(hs+teamdata[h].shots[teamdata[h].shots.length-1]);
+			teamdata[h].corner.push(hcn+teamdata[h].corner[teamdata[h].corner.length-1]);
+			teamdata[h].cross.push(hcr+teamdata[h].cross[teamdata[h].cross.length-1]);
+			teamdata[h].goals.push(hg+teamdata[h].goals[teamdata[h].goals.length-1]);
+			teamdata[h].pens.push(hp+teamdata[h].pens[teamdata[h].pens.length-1]);	
 		}	
 	}
 	return teamdata;
@@ -217,7 +217,10 @@ function genGraph (teamdata)
 	.call(yAxis);
 
 				
-	//Axis Labels
+	//Axis Labels and Chart Title
+	svg.append("text").attr("x",width/2 + 30).attr("y",20)
+	.style("font-weight","bold").style("font-size",20)
+	.text("Cumulative " + d3.select("#metricsel").node().value + " over the Season");
 	svg.append("text").attr("x",padding).attr("y",250)
 	.attr("transform", "translate (-240,300) rotate(-90)")
 	.style("font-weight","bold").text(d3.select("#metricsel").node().value); ;
@@ -258,13 +261,13 @@ function genGraph (teamdata)
 	.attr("width", 100).attr("height", teams.length*17).style("stroke", "black")
 	.style("fill","none");
 	var space = 15;
-	for (var t=0;t < teams.length; t++)
+	for (var t=0;t < teamstats.length; t++)
 	{
 		legend.append("rect").attr("x", 5).attr("y", t*space + 5)
 		.attr("width", 10).attr("height",10).style("fill",color(t));
 		
 		legend.append("text").attr("x",52).attr("y", t*space+10)
-		.style("font-size", 10).text(teams[t]);
+		.style("font-size", 10).text(teamstats[t].team);
 	}
 	
 }
