@@ -21,7 +21,9 @@
 	.loss_text{font-size:10px;fill:white;}
 
 	.season { cursor:pointer;}
-
+	.arrow_table_up {fill:green;}
+	.arrow_table_down {fill:red;}
+	.arrow_table_netural {fill:lightGray;}
 
 	#seasons {
 		display: flex; 
@@ -35,6 +37,7 @@
 	}
 
 	.point_line { stroke:rgb(255,0,0);stroke-width:2;}
+
 
 </style>
 
@@ -65,23 +68,29 @@ var club_images_table, club_text_table;
 var points_bar_table,points_text_table,bar_table;
 var win_bar_table,draw_bar_table,loss_bar_table;
 var xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
-var season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
-
+var season_10_11,season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
+var current_season = "season_15_16";
 var points_bars; 
 var yScale_table;
+var last_season; 
+var arrow_table; 
+
+d3.json("epl-10-11.json", function (error, data) {season_10_11 = data; });
 d3.json("epl-11-12.json", function (error, data) {season_11_12 = data; });
 d3.json("epl-12-13.json", function (error, data) {season_12_13 = data; });
 d3.json("epl-13-14.json", function (error, data) {season_13_14 = data; });
-d3.json("epl-14-15.json", function (error, data) {season_14_15 = data; });
-d3.json("epl-15-16.json", function (error, data) {
+d3.json("epl-14-15.json", function (error, data) {season_14_15 = data; last_season = season_14_15;
+});
 
+d3.json("epl-15-16.json", function (error, data) {
 	var ul = document.getElementById("seasons");
 	ul.addEventListener('click',function(e) { 
-		if (e.target.id ==='season_14_15') { update_season(season_14_15);}
-		else if (e.target.id =='season_15_16') {update_season(season_15_16);}
-		else if (e.target.id =='season_13_14') {update_season(season_13_14);}
-		else if (e.target.id =='season_12_13') {update_season(season_12_13);}
-		else if (e.target.id =='season_11_12') {update_season(season_11_12);}
+		current_season = e.target.id; 
+		if (e.target.id ==='season_14_15') { last_season = season_13_14; update_season(season_14_15);}
+		else if (e.target.id =='season_15_16') {last_season = season_14_15; update_season(season_15_16);}
+		else if (e.target.id =='season_13_14') {last_season = season_12_13; update_season(season_13_14);}
+		else if (e.target.id =='season_12_13') {last_season = season_11_12; update_season(season_12_13);}
+		else if (e.target.id =='season_11_12') {last_season = season_10_11; update_season(season_11_12);}
 
 	});
 
@@ -195,6 +204,7 @@ d3.json("epl-15-16.json", function (error, data) {
 			d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
 			d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
 			d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+			d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
 			d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
 			
 		})
@@ -205,7 +215,8 @@ d3.json("epl-15-16.json", function (error, data) {
 			d3.select(".points_" + i ).transition().delay(500).attr("width",xScale_table(d.points) - xScale_table(0));
 			d3.select(".wins_text_" + i ).transition().delay(250).attr("visibility","hidden");
 			d3.select(".draws_text_" + i ).transition().delay(250).attr("visibility","hidden");			
-			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");			
+			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+			d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");					
 			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");			
 		});
 
@@ -255,18 +266,60 @@ d3.json("epl-15-16.json", function (error, data) {
 		return d.losses + " losses"; 
 	});	
 
-	points_text_table = svg_table.selectAll(".points_text_table").data(season_15_16);
-	points_text_table.enter().append("text")
-		.attr("class",function(d,i) {return "points_text_table_" + i + " points_text_table";})
-		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 10;})
+	arrow_table = svg_table.selectAll(".arrow_table_up.arrow_table_down.arrow_table_neutral").data(season_15_16);
+	arrow_table.enter().append("text")
+		.attr("class",function(d,i) {
+			var result = lastSeason(d,i);
+			if (result[1] == 0) { 
+				return "arrow_table_up" + " arrow_table_" +i + " arrow";
+			}
+
+			else if (result[1] ==1) { 
+				return "arrow_table_down" + " arrow_table_" +i + " arrow";
+			}
+
+			else { 
+				return "arrow_table_neutral" + " arrow_table_" + i + " arrow";
+			}
+
+		})
+		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws + d.losses*3) + 10;})
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
-		.attr("dy",".2em")
-		.text(function(d) { return d.points;});
-		
-
+		.attr("visibility","hidden")
+		.text(function(d,i) { 
+			var result = lastSeason(d,i);
+			return result[0];
+		});
 });
+
+function lastSeason (d,i) { 
+	var current_rank = d.rank;
+	var difference;
+	for( c =0; c < last_season.length; c++) { 
+		if (last_season[c].team == d.team) { 
+			difference = last_season[c].rank - d.rank;
+		}
+	}
+	if (difference >0) { 
+		return [String.fromCharCode(8593) + " +" + difference,0];
+
+	}
+	else if (difference <0) { 
+		return [String.fromCharCode(8595) + " " + difference,1];
+	}
+
+	else if (difference ==0) { 
+		return  [" " + difference,2];
+
+	}
+
+	else { 
+		return [String.fromCharCode(8593) + " Promoted",0];
+	}
+
+}
 
 function update_season(season) {
 	if (season == season_15_16) { 
@@ -282,6 +335,33 @@ function update_season(season) {
 			.attr("y2",height_table - padding_table)
 			.attr("class","point_line");
 	}
+
+	svg_table.selectAll(".arrow").data(season)
+		.attr("class",function(d,i) {
+			var result = lastSeason(d,i);
+			if (result[1] == 0) { 
+				return "arrow_table_up" + " arrow_table_" +i +" arrow";
+			}
+
+			else if (result[1] ==1) { 
+				return "arrow_table_down" + " arrow_table_" +i + " arrow";
+			}
+
+			else { 
+				return "arrow_table_neutral" + " arrow_table_" + i + " arrow";
+			}
+
+		})
+		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws + d.losses*3) + 10;})
+		.attr("y",function(d) { 	
+			return yScale_table(d.rank);
+		})
+		.attr("visibility","hidden")
+		.text(function(d,i) { 
+			console.log(d.team + "  i");
+			var result = lastSeason(d,i);
+			return result[0];
+		});
 
 	svg_table.selectAll(".points_text_table").data(season)
 		.attr("class",function(d,i) {return "points_text_table_" + i + " points_text_table";})
@@ -375,8 +455,8 @@ function update_season(season) {
 			d3.select(".wins_text_" + i ).transition().delay(600).attr("visibility","visible");
 			d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
 			d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+			d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
 			d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
-
 		})
 
 		.on("mouseleave",function(d,i) { 
@@ -387,8 +467,9 @@ function update_season(season) {
 			d3.select(".wins_text_" + i ).transition().delay(250).attr("visibility","hidden");
 			d3.select(".draws_text_" + i ).transition().delay(250).attr("visibility","hidden");			
 			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+			d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");					
+
 			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");			
-			
 		});
 
 	svg_table.selectAll(".win_text").data(season)
@@ -421,10 +502,7 @@ function update_season(season) {
 		return d.losses + " losses"; 
 	});	
 }
-
-
 </script>
 
 </body>
-
 </html>	
