@@ -183,6 +183,16 @@ d3.json("epl-15-16.json", function (error, data) {
 		})
 		.attr("height","15");
 
+	points_text_table = svg_table.selectAll(".points_text_table").data(season_15_16);
+	points_text_table.enter().append("text")
+	.attr("class",function(d,i) {return "points_text_table_" + i + " points_text_table";})
+		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 10;})
+	.attr("y",function(d) { 	
+			return yScale_table(d.rank);
+		})
+	.attr("dy",".2em")
+	.text(function(d) { return d.points;});
+	
 	//Add Invisible Bar for Handling Touch Events
 	bar_table = svg_table.selectAll(".bar_table").data(season_15_16);
 	bar_table.enter().append("rect")
