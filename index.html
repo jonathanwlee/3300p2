@@ -8,7 +8,7 @@
 	.circles_text_table { font-size: 10px; fill:white;}
 
 	.points_bar_table { fill:#e0e0e0;}
-	.points_text_table {font-size:10px;}
+	.points_text_table {font-size:10px; text-anchor:middle;}
 	.club_text_table {font-size:10px;}
 	.bar_table {fill:none;}
 
@@ -34,7 +34,7 @@
 		height:50px;
 	}
 
-	.test { stroke:rgb(255,0,0);stroke-width:2; }
+	.point_line { stroke:rgb(255,0,0);stroke-width:2;}
 
 </style>
 
@@ -64,7 +64,7 @@ var circles_table,circles_text_table;
 var club_images_table, club_text_table;
 var points_bar_table,points_text_table,bar_table;
 var win_bar_table,draw_bar_table,loss_bar_table;
-var xScale_table = d3.scale.linear().domain([0,114]).range([padding_table+190,width_table]);
+var xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
 var season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
 
 var points_bars; 
@@ -90,11 +90,11 @@ d3.json("epl-15-16.json", function (error, data) {
 	yScale_table = d3.scale.ordinal().domain([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]).rangeBands([padding_table,height_table-padding_table]);
 
 	svg_table.append("line")
-		.attr("x1",width_table)
-		.attr("x2",width_table)
+		.attr("x1",xScale_table(102) )
+		.attr("x2",xScale_table(102) )
 		.attr("y1",0)
-		.attr("y2",500)
-		.attr("class","test");
+		.attr("y2",height_table - padding_table)
+		.attr("class","point_line");
 
 	//Add Circles and Rank Labeling
 	circles_table = svg_table.selectAll(".circles_table").data(season_15_16);
@@ -189,12 +189,13 @@ d3.json("epl-15-16.json", function (error, data) {
 		})
 		.on("mouseenter",function(d,i) { 
 			d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
-			d3.select(".wins_" + i  ).transition().delay(250).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
-			d3.select(".draws_" + i ).transition().delay(300).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
-			d3.select(".losses_" + i).transition().delay(350).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
+			d3.select(".wins_" + i  ).transition().delay(400).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
+			d3.select(".draws_" + i ).transition().delay(450).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
+			d3.select(".losses_" + i).transition().delay(500).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
 			d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
 			d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
 			d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+			d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
 			
 		})
 		.on("mouseleave",function(d,i) { 
@@ -205,7 +206,7 @@ d3.json("epl-15-16.json", function (error, data) {
 			d3.select(".wins_text_" + i ).transition().delay(250).attr("visibility","hidden");
 			d3.select(".draws_text_" + i ).transition().delay(250).attr("visibility","hidden");			
 			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");			
-
+			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");			
 		});
 
 	points_bar_table = svg_table.selectAll(".points_bar_table").data(season_15_16);
@@ -254,22 +255,43 @@ d3.json("epl-15-16.json", function (error, data) {
 		return d.losses + " losses"; 
 	});	
 
-
-	/**
-	points_text_table = svg_table.selectAll(".points_text_table").data(table);
+	points_text_table = svg_table.selectAll(".points_text_table").data(season_15_16);
 	points_text_table.enter().append("text")
-		.attr("class","points_text_table")
-		.attr("x",padding_table + 195)
+		.attr("class",function(d,i) {return "points_text_table_" + i + " points_text_table";})
+		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 10;})
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
-		.attr("dy",".3em")
+		.attr("dy",".2em")
 		.text(function(d) { return d.points;});
-		*/
+		
 
 });
 
 function update_season(season) {
+	if (season == season_15_16) { 
+		xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
+	}
+
+	else { 
+		xScale_table = d3.scale.linear().domain([0,114]).range([padding_table+190,width_table]);
+		svg_table.append("line")
+			.attr("x1",xScale_table(114) )
+			.attr("x2",xScale_table(114) )
+			.attr("y1",0)
+			.attr("y2",height_table - padding_table)
+			.attr("class","point_line");
+	}
+
+	svg_table.selectAll(".points_text_table").data(season)
+		.attr("class",function(d,i) {return "points_text_table_" + i + " points_text_table";})
+		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 10;})
+		.attr("y",function(d) { 	
+			return yScale_table(d.rank);
+		})
+		.attr("dy",".2em")
+		.text(function(d) { return d.points;});
+
 	svg_table.selectAll(".club_images_table").data(season)
 		.attr("class","club_images_table")
     	.attr("xlink:href", function(d) {
@@ -347,12 +369,14 @@ function update_season(season) {
 
 		.on("mouseenter",function(d,i) { 
 			d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
-			d3.select(".wins_" + i ).transition().delay(250).attr("width",function() {console.log(d.wins); return xScale_table(d.wins*3) - xScale_table(0);});
+			d3.select(".wins_" + i ).transition().delay(250).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
 			d3.select(".draws_" + i ).transition().delay(300).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
 			d3.select(".losses_" + i ).transition().delay(350).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
 			d3.select(".wins_text_" + i ).transition().delay(600).attr("visibility","visible");
 			d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
 			d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+			d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
+
 		})
 
 		.on("mouseleave",function(d,i) { 
@@ -363,6 +387,7 @@ function update_season(season) {
 			d3.select(".wins_text_" + i ).transition().delay(250).attr("visibility","hidden");
 			d3.select(".draws_text_" + i ).transition().delay(250).attr("visibility","hidden");			
 			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");			
 			
 		});
 
