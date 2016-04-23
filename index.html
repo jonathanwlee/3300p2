@@ -281,20 +281,20 @@ d3.json("epl-15-16.json", function (error, data) {
 		})
 		.on("mouseleave",function(d,i) { 
 			if (clicked_array[i] ==0) { 
-			d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
-			d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
+				d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
+				d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
 
-			d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
-			d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
+				d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
+				d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
 
-			d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
-			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+				d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
+				d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
 
-			d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
-			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
+				d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
+				d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
 
-			d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
-			d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
+				d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
+				d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
 			}	
 		});
 
@@ -404,6 +404,7 @@ function lastSeason (d,i) {
 }
 
 function update_season(season) {
+	
 	if (season == season_15_16) { 
 		xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
 	}
@@ -457,6 +458,7 @@ function update_season(season) {
 			return yScale_table(d.rank);
 		})
 		.attr("dy",".3em")
+		.attr("visibility","visible")
 		.text(function(d) { return d.points;});
 
 	svg_table.selectAll(".club_images_table").data(season)
@@ -535,34 +537,35 @@ function update_season(season) {
 		})
 		.on("click", function(d,i) { 
 			if (clicked_array[i] == 0) { 
-			d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
-			d3.select(".wins_" + i  ).transition().delay(400).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
-			d3.select(".draws_" + i ).transition().delay(450).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
-			d3.select(".losses_" + i).transition().delay(500).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
-			d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
-			d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
-			d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
-			d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
-			d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
-			clicked_array[i] =1;
-			
-			d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
-		}
-		else { 
-			d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
-			d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
+				d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
+				d3.select(".wins_" + i  ).transition().delay(400).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
+				d3.select(".draws_" + i ).transition().delay(450).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
+				d3.select(".losses_" + i).transition().delay(500).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
+				d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
+				d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
+				d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+				d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
+				d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
+				clicked_array[i] =1;
+				d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
+			}
+			else { 
+				d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
+				d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
 
-			d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
-			d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
+				d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
+				d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
 
-			d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
-			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+				d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
+				d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
 
-			d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
-			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
+				d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
+				d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
 
-			d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
-			d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
+				d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
+				clicked_array[i] =0;
+
+				d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
 
 		}
 		})
