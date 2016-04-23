@@ -94,6 +94,10 @@ var last_season;
 var arrow_table; 
 var clicked_array = [];
 
+//Alignment and Sizing Variables
+var table_bar_height = 18;
+var table_bar_adjustment = 10;
+
 d3.json("epl-10-11.json", function (error, data) {season_10_11 = data; });
 d3.json("epl-11-12.json", function (error, data) {season_11_12 = data; });
 d3.json("epl-12-13.json", function (error, data) {season_12_13 = data; });
@@ -148,7 +152,7 @@ d3.json("epl-15-16.json", function (error, data) {
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
-		.attr("dy",".3em")
+		.attr("dy",".35em")
 		.text(function(d) {return d.rank;});
 			
 	//Add Club Images and Text
@@ -159,7 +163,7 @@ d3.json("epl-15-16.json", function (error, data) {
     		var club_name = d.team.replace(/\s/g, '');
     		return "images/"  + club_name + ".png"; })
 		.attr("x",padding_table+145)
-		.attr("y",function(d) { return yScale_table(d.rank)-15;})
+		.attr("y",function(d) { return yScale_table(d.rank) - table_bar_adjustment;})
 		.attr("width",20)
 		.attr("height",20);
 
@@ -167,7 +171,7 @@ d3.json("epl-15-16.json", function (error, data) {
 	club_text_table.enter().append("text")
 		.attr("class","club_text_table")
 		.attr("x",padding_table+20)
-		.attr("dy",".3em")
+		.attr("dy",".35em")
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
@@ -179,33 +183,33 @@ d3.json("epl-15-16.json", function (error, data) {
 		.attr("class",function(d,i) {return "wins_" + i + " win";})
 		.attr("pointer-events","none")
 		.attr("x",xScale_table(0))
-		.attr("y",function(d) {return yScale_table(d.rank)-15;})
+		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width", function(d) { 
 			return 0;
 		})
-		.attr("height","18");
+		.attr("height",table_bar_height);
 
 	draw_bar_table = svg_table.selectAll(".draw_bar_table").data(season_15_16);
 	draw_bar_table.enter().append("rect")
 		.attr("class",function(d,i) {return "draws_" + i  + " draw";})
 		.attr("pointer-events","none")
 		.attr("x",function(d) { return xScale_table(d.wins*3);})
-		.attr("y",function(d) {return yScale_table(d.rank)-15;})
+		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width", function(d) { 
 			return 0;
 		})
-		.attr("height","18");
+		.attr("height",table_bar_height);
 
 	loss_bar_table = svg_table.selectAll(".loss_bar_table").data(season_15_16);
 	loss_bar_table.enter().append("rect")
 		.attr("class",function(d,i) {return "losses_" + i + " loss";})
 		.attr("pointer-events","none")
 		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) })
-		.attr("y",function(d) {return yScale_table(d.rank)-15;})
+		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width", function(d) { 
 			return 0;
 		})
-		.attr("height","18");
+		.attr("height",table_bar_height);
 
 	points_text_table = svg_table.selectAll(".points_text_table").data(season_15_16);
 	points_text_table.enter().append("text")
@@ -214,7 +218,7 @@ d3.json("epl-15-16.json", function (error, data) {
 	.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
-	.attr("dy",".2em")
+	.attr("dy",".3em")
 	.text(function(d) { return d.points;});
 
 	//Add Invisible Bar for Handling Touch Events
@@ -225,10 +229,10 @@ d3.json("epl-15-16.json", function (error, data) {
 		.attr("width",function(d) { 	
 			return xScale_table(d.points) - xScale_table(0);
 		})
-		.attr("height","18")
+		.attr("height",table_bar_height)
 		.attr("x",xScale_table(0))
 		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-10;
+			return yScale_table(d.rank)-table_bar_adjustment;
 		})
 		.on("click", function(d,i) { 
 			if (clicked_array[i] == 0) { 
@@ -301,10 +305,10 @@ d3.json("epl-15-16.json", function (error, data) {
 		.attr("width",function(d) { 	
 			return xScale_table(d.points)-xScale_table(0);
 		})
-		.attr("height","18")
+		.attr("height",table_bar_height)
 		.attr("x",function(d) {return xScale_table(0);})
 		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-15;
+			return yScale_table(d.rank)-table_bar_adjustment;
 		});
 
 	win_text_table = svg_table.selectAll("win_text_table").data(season_15_16);
@@ -313,6 +317,7 @@ d3.json("epl-15-16.json", function (error, data) {
 	.attr("pointer-events","none")
 	.attr("x",function(d) { return xScale_table(0) + 3})
 	.attr("y",function(d) {return yScale_table(d.rank);})
+	.attr("dy",".30em")
 	.attr("visibility","hidden")
 	.text(function(d) {
 		return d.wins + " wins"; 
@@ -324,6 +329,7 @@ d3.json("epl-15-16.json", function (error, data) {
 	.attr("pointer-events","none")
 	.attr("x",function(d) { return xScale_table(d.wins*3) + 3;})
 	.attr("y",function(d) {return yScale_table(d.rank);})
+	.attr("dy",".30em")
 	.attr("visibility","hidden")
 	.text(function(d) {
 		return d.draws + " draws"; 
@@ -336,6 +342,7 @@ d3.json("epl-15-16.json", function (error, data) {
 	.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 3})
 	.attr("y",function(d) {return yScale_table(d.rank);})
 	.attr("visibility","hidden")
+	.attr("dy",".30em")
 	.text(function(d) {
 		return d.losses + " losses"; 
 	});	
@@ -361,6 +368,7 @@ d3.json("epl-15-16.json", function (error, data) {
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
+		.attr("dy",".15em")
 		.attr("visibility","hidden")
 		.text(function(d,i) { 
 			var result = lastSeason(d,i);
@@ -434,6 +442,7 @@ function update_season(season) {
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
+		.attr("dy",".30em")
 		.attr("visibility","hidden")
 		.text(function(d,i) { 
 			console.log(d.team + "  i");
@@ -447,7 +456,7 @@ function update_season(season) {
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
-		.attr("dy",".2em")
+		.attr("dy",".3em")
 		.text(function(d) { return d.points;});
 
 	svg_table.selectAll(".club_images_table").data(season)
@@ -456,14 +465,14 @@ function update_season(season) {
     		var club_name = d.team.replace(/\s/g, '');
     		return "images/"  + club_name + ".png"; })
 		.attr("x",padding_table+145)
-		.attr("y",function(d) { return yScale_table(d.rank)-15;})
+		.attr("y",function(d) { return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width",20)
 		.attr("height",20);
 
 	svg_table.selectAll(".club_text_table").data(season)
 		.attr("class","club_text_table")
 		.attr("x",padding_table+20)
-		.attr("dy",".3em")
+		.attr("dy",".35em")
 		.attr("y",function(d) { 	
 			return yScale_table(d.rank);
 		})
@@ -477,41 +486,41 @@ function update_season(season) {
 		.attr("width",function(d) { 	
 			return xScale_table(d.points) - xScale_table(0);
 		})
-		.attr("height","18")
+		.attr("height",table_bar_height)
 		.attr("x",xScale_table(0))
 		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-15;
+			return yScale_table(d.rank)-table_bar_adjustment;
 		});
 
 	svg_table.selectAll(".win").data(season)
 		.attr("class",function(d,i) {return "wins_" + i + " win";})
 		.attr("pointer-events","none")
 		.attr("x",padding_table + 190 )
-		.attr("y",function(d) {return yScale_table(d.rank)-15;})
+		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width", function(d) { 
 			return 0;
 		})
-		.attr("height","18");
+		.attr("height",table_bar_height);
 
 	svg_table.selectAll(".draw").data(season)
 		.attr("class",function(d,i) {return "draws_" + i  + " draw";})
 		.attr("pointer-events","none")
 		.attr("x",function(d) { return xScale_table(d.wins*3);})
-		.attr("y",function(d) {return yScale_table(d.rank)-15;})
+		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width", function(d) { 
 			return 0;
 		})
-		.attr("height","18");
+		.attr("height",table_bar_height);
 
 	svg_table.selectAll(".loss").data(season)
 		.attr("class",function(d,i) {return "losses_" + i + " loss";})
 		.attr("pointer-events","none")
 		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws)})
-		.attr("y",function(d) {return yScale_table(d.rank)-15;})
+		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width", function(d) { 
 			return 0;
 		})
-		.attr("height","18");
+		.attr("height",table_bar_height);
 
 	svg_table.selectAll(".bar_table").data(season)
 		.attr("pointer-events","all")
@@ -519,12 +528,12 @@ function update_season(season) {
 		.attr("width",function(d) { 	
 			return xScale_table(d.points) - xScale_table(0);
 		})
-		.attr("height","18")
+		.attr("height",table_bar_height)
 		.attr("x",xScale_table(0))
 		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-10;
+			return yScale_table(d.rank)-table_bar_adjustment;
 		})
-.on("click", function(d,i) { 
+		.on("click", function(d,i) { 
 			if (clicked_array[i] == 0) { 
 			d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
 			d3.select(".wins_" + i  ).transition().delay(400).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
@@ -599,6 +608,7 @@ function update_season(season) {
 	.attr("x",function(d) { return xScale_table(0) +3;})
 	.attr("y",function(d) {return yScale_table(d.rank);})
 	.attr("visibility","hidden")
+	.attr("dy",".35em")
 	.text(function(d) {
 		return d.wins + " wins"; 
 	});	
@@ -609,6 +619,7 @@ function update_season(season) {
 	.attr("x",function(d) { return xScale_table(d.wins*3) + 3;})
 	.attr("y",function(d) {return yScale_table(d.rank);})
 	.attr("visibility","hidden")
+	.attr("dy",".35em")
 	.text(function(d) {
 		return d.draws + " draws"; 
 	});	
@@ -619,6 +630,7 @@ function update_season(season) {
 	.attr("x",function(d) { return xScale_table(d.wins*3 +d.draws) +3 })
 	.attr("y",function(d) {return yScale_table(d.rank);})
 	.attr("visibility","hidden")
+	.attr("dy",".35em")
 	.text(function(d) {
 		return d.losses + " losses"; 
 	});	
