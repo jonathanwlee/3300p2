@@ -2,9 +2,11 @@
 <head>
 	<title>Assignment 6 - Jonathan Lee - jwl274 </title>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
-<style>
+	<style>
 	body {font-family:"Lato";}
 
 	.circles_text_table { font-size: 10px; fill:white;}
@@ -27,77 +29,132 @@
 	.arrow_table_down {fill:red;}
 	.arrow_table_netural {fill:lightGray;}
 
-	#seasons {
-		display: flex; 
-		flex-wrap: nowrap; 
-		justify-content: space-around; 
-		align-items: center;
-		margin:0 auto;
-		list-style: none;
-		width:70%;
-		height:50px;
+	.season {
+		height:30px;
+		display: inline-block;
+		padding:0;
+		margin:0;
 	}
 
 	.point_line { 
 		stroke:rgb(255,0,0);
 		stroke-width:2;
-	}
+	}	
 
 	#slider label {
-	    position: absolute;
-	    width: 20px;
-	    margin-left: -10px;
-	    text-align: center;
-	    margin-top: 20px;
+		position: absolute;
+		width: 40px;
+		font-size:10px;
+		margin-left: -15px;
+		text-align: center;
+		margin-top: 20px;
 	}
 
 	/* below is not necessary, just for style */
 	#slider {
-	    width: 50%;
-	    margin: 2em auto;
+		width: 70%;
+		margin: 2em auto;
 	}
-</style>
+
+	#seasonYears { 
+		width: 70%;
+		margin:0 auto;
+		padding:0;
+
+	}
+	</style>
 </head>
 
 <body>
-<h1>The Premier League at a Glance</h1>
+	<h1>The Premier League at a Glance</h1>
+	<div id="slider"></div>
 
-<div id="slider"></div>
-<div id="seasonYears">
-<ul id="seasons">
-	<li id="season_11_12" class="season">11-12</li>
-	<li id="season_12_13" class="season">12-13</li>
-	<li id="season_13_14" class="season">13-14</li>
-	<li id="season_14_15" class="season">14-15</li>
-	<li id="season_15_16" class="season">15-16</li>
-</div>
+	<script>
+	var startPos = 5; 
+	$( "#slider" ).slider({
+		value: 10,
+		min: 1,
+		max: 10,
+		step: 1
+	})
+	.each(function() {
 
-<div id="table"></div>
+  var vals = 9;
+  
+  // Space out values
+  for (var i = 0; i <= vals; i++) {
+  	var label;
+  	if (i==9) { label = "'15-'16";}
+  	else if(i==8) { label ="'14-'15";}
+  	else if(i==7) { label ="'13-'14";}
+  	else if(i==6) { label ="'12-'13";}
+  	else if(i==5) { label ="'11-'12";}
+  	else if(i==4) { label ="'10-'11";}
+  	else if(i==3) { label ="'09-'10";}
+  	else if(i==2) { label ="'08-'09";}
+  	else if(i==1) { label ="'07-'08";}
+  	else if(i==0) { label ="'06-'07";}
 
-<script>
-var height_table = 600;
-var width_table = 1000;
-var padding_table = 30;
+  	var el = $('<label>' + label + '</label>').css('left',(i/vals*100)+'%');
+  	$( "#slider" ).append(el);
+  }
+});
 
-var svg_table = d3.select("#table").append("svg").attr("height", height_table).attr("width", width_table);
-var table; 
-var circles_table,circles_text_table;
-var club_images_table, club_text_table;
-var points_bar_table,points_text_table,bar_table;
-var win_bar_table,draw_bar_table,loss_bar_table;
-var xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
-var season_10_11,season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
-var current_season = "season_15_16";
-var points_bars; 
-var yScale_table;
-var last_season; 
-var arrow_table; 
-var clicked_array = [];
+	  $("#slider").on("slidestop", function(event, ui) {
+        endPos = ui.value;
+        console.log(endPos);
+        if (startPos != endPos) {
+
+		if (endPos ==10 ) {last_season = season_14_15; update_season(season_15_16);}
+		else if (endPos == 9) { last_season = season_13_14; update_season(season_14_15);}
+		else if (endPos ==8 ) {last_season = season_12_13; update_season(season_13_14);}
+		else if (endPos ==7 ) {last_season = season_11_12; update_season(season_12_13);}
+		else if (endPos ==6 ) {last_season = season_10_11; update_season(season_11_12);}
+		else if (endPos ==5 ) {last_season = season_09_10; update_season(season_10_11);}
+		else if (endPos ==4 ) {last_season = season_08_09; update_season(season_09_10);}
+		else if (endPos ==3 ) {last_season = season_07_08; update_season(season_08_09);}
+		else if (endPos ==2 ) {last_season = season_06_07; update_season(season_07_08);}
+		else if (endPos ==1 ) {last_season = season_05_06; update_season(season_06_07);}
+
+        }
+
+        startPos = endPos;
+    });
+
+	</script>
+
+
+	<div id="table"></div>
+
+	<script>
+	var height_table = 600;
+	var width_table = 1000;
+	var padding_table = 30;
+
+	var svg_table = d3.select("#table").append("svg").attr("height", height_table).attr("width", width_table);
+	var table; 
+	var circles_table,circles_text_table;
+	var club_images_table, club_text_table;
+	var points_bar_table,points_text_table,bar_table;
+	var win_bar_table,draw_bar_table,loss_bar_table;
+	var xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
+	var season_05_06,season_06_07,season_07_08,season_08_09,season_09_10,season_10_11,season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
+	var current_season = "season_15_16";
+	var points_bars; 
+	var yScale_table;
+	var last_season; 
+	var arrow_table; 
+	var clicked_array = [];
 
 //Alignment and Sizing Variables
 var table_bar_height = 18;
 var table_bar_adjustment = 10;
 
+d3.json("epl-05-06.json", function (error, data) {season_05_06 = data; });
+d3.json("epl-06-07.json", function (error, data) {season_06_07 = data; });
+d3.json("epl-07-08.json", function (error, data) {season_07_08 = data; });
+d3.json("epl-08-09.json", function (error, data) {season_08_09 = data; });
+d3.json("epl-09-10.json", function (error, data) {season_09_10 = data; });
 d3.json("epl-10-11.json", function (error, data) {season_10_11 = data; });
 d3.json("epl-11-12.json", function (error, data) {season_11_12 = data; });
 d3.json("epl-12-13.json", function (error, data) {season_12_13 = data; });
@@ -109,21 +166,10 @@ d3.json("epl-15-16.json", function (error, data) {
 	for (p=0;p<20;p++) { 
 		clicked_array[p] = 0;
 	}
-		
-	var ul = document.getElementById("seasons");
-	ul.addEventListener('click',function(e) { 
-		current_season = e.target.id; 
-		if (e.target.id ==='season_14_15') { last_season = season_13_14; update_season(season_14_15);}
-		else if (e.target.id =='season_15_16') {last_season = season_14_15; update_season(season_15_16);}
-		else if (e.target.id =='season_13_14') {last_season = season_12_13; update_season(season_13_14);}
-		else if (e.target.id =='season_12_13') {last_season = season_11_12; update_season(season_12_13);}
-		else if (e.target.id =='season_11_12') {last_season = season_10_11; update_season(season_11_12);}
 
-	});
+season_15_16 = data; 
 
-	season_15_16 = data; 
-
-	yScale_table = d3.scale.ordinal().domain([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]).rangeBands([padding_table,height_table-padding_table]);
+yScale_table = d3.scale.ordinal().domain([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]).rangeBands([padding_table,height_table-padding_table]);
 
 /*	svg_table.append("line")
 		.attr("x1",xScale_table(102) )
@@ -131,111 +177,111 @@ d3.json("epl-15-16.json", function (error, data) {
 		.attr("y1",0)
 		.attr("y2",height_table - padding_table)
 		.attr("class","point_line");
-*/
+		*/
 
 	//Add Circles and Rank Labeling
 	circles_table = svg_table.selectAll(".circles_table").data(season_15_16);
 	circles_table.enter().append("circle")
-		.attr("class","circles_table")
-		.attr("r",10)
-		.attr("fill","#2166ac")
-		.attr("cx",padding_table)
-		.attr("cy",function(d) {
-			return yScale_table(d.rank);
-		})
+	.attr("class","circles_table")
+	.attr("r",10)
+	.attr("fill","#2166ac")
+	.attr("cx",padding_table)
+	.attr("cy",function(d) {
+		return yScale_table(d.rank);
+	})
 
 	circles_text_table = svg_table.selectAll(".circles_text_table").data(season_15_16);
 	circles_text_table.enter().append("text")
-		.attr("class","circles_text_table")
-		.attr("text-anchor","middle")
-		.attr("dx",padding_table)
-		.attr("y",function(d) { 	
-			return yScale_table(d.rank);
-		})
-		.attr("dy",".35em")
-		.text(function(d) {return d.rank;});
-			
+	.attr("class","circles_text_table")
+	.attr("text-anchor","middle")
+	.attr("dx",padding_table)
+	.attr("y",function(d) { 	
+		return yScale_table(d.rank);
+	})
+	.attr("dy",".35em")
+	.text(function(d) {return d.rank;});
+
 	//Add Club Images and Text
 	club_images_table = svg_table.selectAll(".club_images_table").data(season_15_16);
 	club_images_table.enter().append("svg:image")
-		.attr("class","club_images_table")
-    	.attr("xlink:href", function(d) {
-    		var club_name = d.team.replace(/\s/g, '');
-    		return "images/"  + club_name + ".png"; })
-		.attr("x",padding_table+145)
-		.attr("y",function(d) { return yScale_table(d.rank) - table_bar_adjustment;})
-		.attr("width",20)
-		.attr("height",20);
+	.attr("class","club_images_table")
+	.attr("xlink:href", function(d) {
+		var club_name = d.team.replace(/\s/g, '');
+		return "images/"  + club_name + ".png"; })
+	.attr("x",padding_table+145)
+	.attr("y",function(d) { return yScale_table(d.rank) - table_bar_adjustment;})
+	.attr("width",20)
+	.attr("height",20);
 
 	club_text_table = svg_table.selectAll(".club_text_table").data(season_15_16);
 	club_text_table.enter().append("text")
-		.attr("class","club_text_table")
-		.attr("x",padding_table+20)
-		.attr("dy",".35em")
-		.attr("y",function(d) { 	
-			return yScale_table(d.rank);
-		})
-		.text(function(d) {return d.team;});
+	.attr("class","club_text_table")
+	.attr("x",padding_table+20)
+	.attr("dy",".35em")
+	.attr("y",function(d) { 	
+		return yScale_table(d.rank);
+	})
+	.text(function(d) {return d.team;});
 
 	//Add Win, Draw, and Loss Bar
 	win_bar_table = svg_table.selectAll(".win_bar_table").data(season_15_16);
 	win_bar_table.enter().append("rect")
-		.attr("class",function(d,i) {return "wins_" + i + " win";})
-		.attr("pointer-events","none")
-		.attr("x",xScale_table(0))
-		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
-		.attr("height",table_bar_height);
+	.attr("class",function(d,i) {return "wins_" + i + " win";})
+	.attr("pointer-events","none")
+	.attr("x",xScale_table(0))
+	.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
+	.attr("width", function(d) { 
+		return 0;
+	})
+	.attr("height",table_bar_height);
 
 	draw_bar_table = svg_table.selectAll(".draw_bar_table").data(season_15_16);
 	draw_bar_table.enter().append("rect")
-		.attr("class",function(d,i) {return "draws_" + i  + " draw";})
-		.attr("pointer-events","none")
-		.attr("x",function(d) { return xScale_table(d.wins*3);})
-		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
-		.attr("height",table_bar_height);
+	.attr("class",function(d,i) {return "draws_" + i  + " draw";})
+	.attr("pointer-events","none")
+	.attr("x",function(d) { return xScale_table(d.wins*3);})
+	.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
+	.attr("width", function(d) { 
+		return 0;
+	})
+	.attr("height",table_bar_height);
 
 	loss_bar_table = svg_table.selectAll(".loss_bar_table").data(season_15_16);
 	loss_bar_table.enter().append("rect")
-		.attr("class",function(d,i) {return "losses_" + i + " loss";})
-		.attr("pointer-events","none")
-		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) })
-		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
-		.attr("height",table_bar_height);
+	.attr("class",function(d,i) {return "losses_" + i + " loss";})
+	.attr("pointer-events","none")
+	.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) })
+	.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
+	.attr("width", function(d) { 
+		return 0;
+	})
+	.attr("height",table_bar_height);
 
 	points_text_table = svg_table.selectAll(".points_text_table").data(season_15_16);
 	points_text_table.enter().append("text")
 	.attr("class",function(d,i) {return "points_text_table_" + i + " points_text_table";})
-		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 10;})
+	.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 10;})
 	.attr("y",function(d) { 	
-			return yScale_table(d.rank);
-		})
+		return yScale_table(d.rank);
+	})
 	.attr("dy",".3em")
 	.text(function(d) { return d.points;});
 
 	//Add Invisible Bar for Handling Touch Events
 	bar_table = svg_table.selectAll(".bar_table").data(season_15_16);
 	bar_table.enter().append("rect")
-		.attr("pointer-events","all")
-		.attr("class",function(d,i) { return "bar_table_" + i + " bar_table";})
-		.attr("width",function(d) { 	
-			return xScale_table(d.points) - xScale_table(0);
-		})
-		.attr("height",table_bar_height)
-		.attr("x",xScale_table(0))
-		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-table_bar_adjustment;
-		})
-		.on("click", function(d,i) { 
-			if (clicked_array[i] == 0) { 
+	.attr("pointer-events","all")
+	.attr("class",function(d,i) { return "bar_table_" + i + " bar_table";})
+	.attr("width",function(d) { 	
+		return xScale_table(d.points) - xScale_table(0);
+	})
+	.attr("height",table_bar_height)
+	.attr("x",xScale_table(0))
+	.attr("y",function(d) { 	
+		return yScale_table(d.rank)-table_bar_adjustment;
+	})
+	.on("click", function(d,i) { 
+		if (clicked_array[i] == 0) { 
 			d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
 			d3.select(".wins_" + i  ).transition().delay(400).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
 			d3.select(".draws_" + i ).transition().delay(450).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
@@ -246,7 +292,7 @@ d3.json("epl-15-16.json", function (error, data) {
 			d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
 			d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
 			clicked_array[i] =1;
-			
+
 			d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
 		}
 		else { 
@@ -263,117 +309,119 @@ d3.json("epl-15-16.json", function (error, data) {
 			
 			d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
 		}
-		})
+		
+	})
 
-		.on("mouseenter",function(d,i) { 
-			if (clicked_array[i] ==0) { 
-				d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
-				d3.select(".wins_" + i  ).transition().duration(250).delay(250).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
-				d3.select(".draws_" + i ).transition().duration(250).delay(300).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
-				d3.select(".losses_" + i).transition().duration(250).delay(350).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
-				d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
-				d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
-				d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
-				d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
-				d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
-				d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
-			}
-		})
-		.on("mouseleave",function(d,i) { 
-			if (clicked_array[i] ==0) { 
-				d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
-				d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
+.on("mouseenter",function(d,i) { 
+	if (clicked_array[i] ==0) { 
+		d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
+		d3.select(".wins_" + i  ).transition().duration(250).delay(250).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
+		d3.select(".draws_" + i ).transition().duration(250).delay(300).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
+		d3.select(".losses_" + i).transition().duration(250).delay(350).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
+		d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
+		d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
+		d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+		d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
+		d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
 
-				d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
-				d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
+		d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
+	}
+})
+.on("mouseleave",function(d,i) { 
+	if (clicked_array[i] ==0) { 
+		d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
+		d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
 
-				d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
-				d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+		d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
+		d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
 
-				d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
-				d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
+		d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
+		d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
 
-				d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
-				d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
-			}	
-		});
+		d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
+		d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
 
-	points_bar_table = svg_table.selectAll(".points_bar_table").data(season_15_16);
-	points_bar_table.enter().append("rect")
-		.attr("pointer-events","none")
-		.attr("class",function(d,i) {return "points_" + i + " points_bar_table";})
-		.attr("width",function(d) { 	
-			return xScale_table(d.points)-xScale_table(0);
-		})
-		.attr("height",table_bar_height)
-		.attr("x",function(d) {return xScale_table(0);})
-		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-table_bar_adjustment;
-		});
+		d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
+		d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
+	}	
+});
 
-	win_text_table = svg_table.selectAll("win_text_table").data(season_15_16);
-	win_text_table.enter().append("text")
-	.attr("class",function(d,i) {return "wins_text_" + i + " win_text";})
-	.attr("pointer-events","none")
-	.attr("x",function(d) { return xScale_table(0) + 3})
-	.attr("y",function(d) {return yScale_table(d.rank);})
-	.attr("dy",".30em")
-	.attr("visibility","hidden")
-	.text(function(d) {
-		return d.wins + " wins"; 
-	});	
+points_bar_table = svg_table.selectAll(".points_bar_table").data(season_15_16);
+points_bar_table.enter().append("rect")
+.attr("pointer-events","none")
+.attr("class",function(d,i) {return "points_" + i + " points_bar_table";})
+.attr("width",function(d) { 	
+	return xScale_table(d.points)-xScale_table(0);
+})
+.attr("height",table_bar_height)
+.attr("x",function(d) {return xScale_table(0);})
+.attr("y",function(d) { 	
+	return yScale_table(d.rank)-table_bar_adjustment;
+});
 
-	draw_text_table = svg_table.selectAll("draw_text_table").data(season_15_16);
-	draw_text_table.enter().append("text")
-	.attr("class",function(d,i) {return "draws_text_" + i + " draw_text";})
-	.attr("pointer-events","none")
-	.attr("x",function(d) { return xScale_table(d.wins*3) + 3;})
-	.attr("y",function(d) {return yScale_table(d.rank);})
-	.attr("dy",".30em")
-	.attr("visibility","hidden")
-	.text(function(d) {
-		return d.draws + " draws"; 
-	});	
+win_text_table = svg_table.selectAll("win_text_table").data(season_15_16);
+win_text_table.enter().append("text")
+.attr("class",function(d,i) {return "wins_text_" + i + " win_text";})
+.attr("pointer-events","none")
+.attr("x",function(d) { return xScale_table(0) + 3})
+.attr("y",function(d) {return yScale_table(d.rank);})
+.attr("dy",".30em")
+.attr("visibility","hidden")
+.text(function(d) {
+	return d.wins + " wins"; 
+});	
 
-	loss_text_table = svg_table.selectAll("loss_text_table").data(season_15_16);
-	loss_text_table.enter().append("text")
-	.attr("class",function(d,i) {return "losses_text_" + i + " loss_text";})
-	.attr("pointer-events","none")
-	.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 3})
-	.attr("y",function(d) {return yScale_table(d.rank);})
-	.attr("visibility","hidden")
-	.attr("dy",".30em")
-	.text(function(d) {
-		return d.losses + " losses"; 
-	});	
+draw_text_table = svg_table.selectAll("draw_text_table").data(season_15_16);
+draw_text_table.enter().append("text")
+.attr("class",function(d,i) {return "draws_text_" + i + " draw_text";})
+.attr("pointer-events","none")
+.attr("x",function(d) { return xScale_table(d.wins*3) + 3;})
+.attr("y",function(d) {return yScale_table(d.rank);})
+.attr("dy",".30em")
+.attr("visibility","hidden")
+.text(function(d) {
+	return d.draws + " draws"; 
+});	
 
-	arrow_table = svg_table.selectAll(".arrow_table_up.arrow_table_down.arrow_table_neutral").data(season_15_16);
-	arrow_table.enter().append("text")
-		.attr("class",function(d,i) {
-			var result = lastSeason(d,i);
-			if (result[1] == 0) { 
-				return "arrow_table_up" + " arrow_table_" +i + " arrow";
-			}
+loss_text_table = svg_table.selectAll("loss_text_table").data(season_15_16);
+loss_text_table.enter().append("text")
+.attr("class",function(d,i) {return "losses_text_" + i + " loss_text";})
+.attr("pointer-events","none")
+.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 3})
+.attr("y",function(d) {return yScale_table(d.rank);})
+.attr("visibility","hidden")
+.attr("dy",".30em")
+.text(function(d) {
+	return d.losses + " losses"; 
+});	
 
-			else if (result[1] ==1) { 
-				return "arrow_table_down" + " arrow_table_" +i + " arrow";
-			}
+arrow_table = svg_table.selectAll(".arrow_table_up.arrow_table_down.arrow_table_neutral").data(season_15_16);
+arrow_table.enter().append("text")
+.attr("class",function(d,i) {
+	var result = lastSeason(d,i);
+	if (result[1] == 0) { 
+		return "arrow_table_up" + " arrow_table_" +i + " arrow";
+	}
 
-			else { 
-				return "arrow_table_neutral" + " arrow_table_" + i + " arrow";
-			}
+	else if (result[1] ==1) { 
+		return "arrow_table_down" + " arrow_table_" +i + " arrow";
+	}
 
-		})
-		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws + d.losses*3) + 10;})
-		.attr("y",function(d) { 	
-			return yScale_table(d.rank);
-		})
-		.attr("dy",".15em")
-		.attr("visibility","hidden")
-		.text(function(d,i) { 
-			var result = lastSeason(d,i);
-			return result[0];
-		});
+	else { 
+		return "arrow_table_neutral" + " arrow_table_" + i + " arrow";
+	}
+
+})
+.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws + d.losses*3) + 10;})
+.attr("y",function(d) { 	
+	return yScale_table(d.rank);
+})
+.attr("dy",".15em")
+.attr("visibility","hidden")
+.text(function(d,i) { 
+	var result = lastSeason(d,i);
+	return result[0];
+});
 });
 
 function lastSeason (d,i) { 
@@ -393,12 +441,12 @@ function lastSeason (d,i) {
 	}
 
 	else if (difference ==0) { 
-		return  [" " + difference,2];
+		return  [String.fromCharCode(8593) + String.fromCharCode(8595)+ " " + difference,2];
 
 	}
 
 	else { 
-		return [String.fromCharCode(8593) + " Promoted",0];
+		return [String.fromCharCode(8593) + " promoted",0];
 	}
 
 }
@@ -417,13 +465,13 @@ function update_season(season) {
 			.attr("y1",0)
 			.attr("y2",height_table - padding_table)
 			.attr("class","point_line");*/
-	}
+		}
 
-	for (p=0;p<20;p++) { 
-		clicked_array[p] = 0;
-	}
+		for (p=0;p<20;p++) { 
+			clicked_array[p] = 0;
+		}
 
-	svg_table.selectAll(".arrow").data(season)
+		svg_table.selectAll(".arrow").data(season)
 		.attr("class",function(d,i) {
 			var result = lastSeason(d,i);
 			if (result[1] == 0) { 
@@ -446,12 +494,12 @@ function update_season(season) {
 		.attr("dy",".30em")
 		.attr("visibility","hidden")
 		.text(function(d,i) { 
-			console.log(d.team + "  i");
+			//console.log(d.team + "  i");
 			var result = lastSeason(d,i);
 			return result[0];
 		});
 
-	svg_table.selectAll(".points_text_table").data(season)
+		svg_table.selectAll(".points_text_table").data(season)
 		.attr("class",function(d,i) {return "points_text_table_" + i + " points_text_table";})
 		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws) + 10;})
 		.attr("y",function(d) { 	
@@ -461,17 +509,17 @@ function update_season(season) {
 		.attr("visibility","visible")
 		.text(function(d) { return d.points;});
 
-	svg_table.selectAll(".club_images_table").data(season)
+		svg_table.selectAll(".club_images_table").data(season)
 		.attr("class","club_images_table")
-    	.attr("xlink:href", function(d) {
-    		var club_name = d.team.replace(/\s/g, '');
-    		return "images/"  + club_name + ".png"; })
+		.attr("xlink:href", function(d) {
+			var club_name = d.team.replace(/\s/g, '');
+			return "images/"  + club_name + ".png"; })
 		.attr("x",padding_table+145)
 		.attr("y",function(d) { return yScale_table(d.rank)-table_bar_adjustment;})
 		.attr("width",20)
 		.attr("height",20);
 
-	svg_table.selectAll(".club_text_table").data(season)
+		svg_table.selectAll(".club_text_table").data(season)
 		.attr("class","club_text_table")
 		.attr("x",padding_table+20)
 		.attr("dy",".35em")
@@ -482,161 +530,161 @@ function update_season(season) {
 
 	//Add Win, Draw, and Loss Bar
 	svg_table.selectAll(".points_bar_table").data(season)
-		.transition()
-		.attr("pointer-events","none")
-		.attr("class",function(d,i) {return "points_" + i + " points_bar_table";})
-		.attr("width",function(d) { 	
-			return xScale_table(d.points) - xScale_table(0);
-		})
-		.attr("height",table_bar_height)
-		.attr("x",xScale_table(0))
-		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-table_bar_adjustment;
-		});
+	.transition()
+	.attr("pointer-events","none")
+	.attr("class",function(d,i) {return "points_" + i + " points_bar_table";})
+	.attr("width",function(d) { 	
+		return xScale_table(d.points) - xScale_table(0);
+	})
+	.attr("height",table_bar_height)
+	.attr("x",xScale_table(0))
+	.attr("y",function(d) { 	
+		return yScale_table(d.rank)-table_bar_adjustment;
+	});
 
 	svg_table.selectAll(".win").data(season)
-		.attr("class",function(d,i) {return "wins_" + i + " win";})
-		.attr("pointer-events","none")
-		.attr("x",padding_table + 190 )
-		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
-		.attr("height",table_bar_height);
+	.attr("class",function(d,i) {return "wins_" + i + " win";})
+	.attr("pointer-events","none")
+	.attr("x",padding_table + 190 )
+	.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
+	.attr("width", function(d) { 
+		return 0;
+	})
+	.attr("height",table_bar_height);
 
 	svg_table.selectAll(".draw").data(season)
-		.attr("class",function(d,i) {return "draws_" + i  + " draw";})
-		.attr("pointer-events","none")
-		.attr("x",function(d) { return xScale_table(d.wins*3);})
-		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
-		.attr("height",table_bar_height);
+	.attr("class",function(d,i) {return "draws_" + i  + " draw";})
+	.attr("pointer-events","none")
+	.attr("x",function(d) { return xScale_table(d.wins*3);})
+	.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
+	.attr("width", function(d) { 
+		return 0;
+	})
+	.attr("height",table_bar_height);
 
 	svg_table.selectAll(".loss").data(season)
-		.attr("class",function(d,i) {return "losses_" + i + " loss";})
-		.attr("pointer-events","none")
-		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws)})
-		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
-		.attr("height",table_bar_height);
+	.attr("class",function(d,i) {return "losses_" + i + " loss";})
+	.attr("pointer-events","none")
+	.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws)})
+	.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
+	.attr("width", function(d) { 
+		return 0;
+	})
+	.attr("height",table_bar_height);
 
 	svg_table.selectAll(".bar_table").data(season)
-		.attr("pointer-events","all")
-		.attr("class",function(d,i) { return "bar_table_" + i + " bar_table";})
-		.attr("width",function(d) { 	
-			return xScale_table(d.points) - xScale_table(0);
-		})
-		.attr("height",table_bar_height)
-		.attr("x",xScale_table(0))
-		.attr("y",function(d) { 	
-			return yScale_table(d.rank)-table_bar_adjustment;
-		})
-		.on("click", function(d,i) { 
-			if (clicked_array[i] == 0) { 
-				d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
-				d3.select(".wins_" + i  ).transition().delay(400).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
-				d3.select(".draws_" + i ).transition().delay(450).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
-				d3.select(".losses_" + i).transition().delay(500).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
-				d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
-				d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
-				d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
-				d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
-				d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
-				clicked_array[i] =1;
+	.attr("pointer-events","all")
+	.attr("class",function(d,i) { return "bar_table_" + i + " bar_table";})
+	.attr("width",function(d) { 	
+		return xScale_table(d.points) - xScale_table(0);
+	})
+	.attr("height",table_bar_height)
+	.attr("x",xScale_table(0))
+	.attr("y",function(d) { 	
+		return yScale_table(d.rank)-table_bar_adjustment;
+	})
+	.on("click", function(d,i) { 
+		if (clicked_array[i] == 0) { 
+			d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
+			d3.select(".wins_" + i  ).transition().delay(400).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
+			d3.select(".draws_" + i ).transition().delay(450).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
+			d3.select(".losses_" + i).transition().delay(500).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
+			d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
+			d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
+			d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+			d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
+			d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
+			clicked_array[i] =1;
 
-				d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
-			}
-			else { 
-				d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
-				d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
+			d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
+		}
+		else { 
+			d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
+			d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
 
-				d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
-				d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
+			d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
+			d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
 
-				d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
-				d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+			d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
+			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
 
-				d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
-				d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
+			d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
+			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
 
-				d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
-				clicked_array[i] =0;
+			d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
+			clicked_array[i] =0;
 
-				d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);});
-			}
-		})
-		.on("mouseenter",function(d,i) { 
-			if (clicked_array[i] ==0) { 
-				d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
-				d3.select(".wins_" + i  ).transition().duration(250).delay(250).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
-				d3.select(".draws_" + i ).transition().duration(250).delay(300).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
-				d3.select(".losses_" + i).transition().duration(250).delay(350).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
-				d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
-				d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
-				d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
-				d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
-				d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
+			d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);});
+		}
+	})
+.on("mouseenter",function(d,i) { 
+	if (clicked_array[i] ==0) { 
+		d3.select(".points_" + i ).transition().attr("width",function() {return 0;});
+		d3.select(".wins_" + i  ).transition().duration(250).delay(250).attr("width",function() {return xScale_table(d.wins*3) - xScale_table(0);});
+		d3.select(".draws_" + i ).transition().duration(250).delay(300).attr("width",function() {return xScale_table(d.draws) - xScale_table(0);});
+		d3.select(".losses_" + i).transition().duration(250).delay(350).attr("width",function() {return xScale_table(d.losses*3) - xScale_table(0);});
+		d3.select(".wins_text_" + i).transition().delay(600).attr("visibility","visible");
+		d3.select(".draws_text_" + i ).transition().delay(600).attr("visibility","visible");			
+		d3.select(".losses_text_" + i ).transition().delay(600).attr("visibility","visible");
+		d3.select(".arrow_table_" + i ).transition().delay(600).attr("visibility","visible");
+		d3.selectAll(".points_text_table_" + i ).transition().attr("visibility","hidden");
 
-				d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
+		d3.select(".bar_table_" + i).attr("width",function() { return xScale_table(d.points)-xScale_table(0) + xScale_table(d.losses*3) - xScale_table(0); });
 
-			}
-		})
-		.on("mouseleave",function(d,i) { 
-			if (clicked_array[i] ==0) { 
-				d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
-				d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
+	}
+})
+.on("mouseleave",function(d,i) { 
+	if (clicked_array[i] ==0) { 
+		d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
+		d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
 
-				d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
-				d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
+		d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
+		d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
 
-				d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
-				d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
+		d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
+		d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
 
-				d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
-				d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
+		d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
+		d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
 
-				d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
+		d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
 
-				d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
-			}	
-		});
+		d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
+	}	
+});
 
-	svg_table.selectAll(".win_text").data(season)
-		.attr("class",function(d,i) {return "wins_text_" + i + " win_text";})
-		.attr("pointer-events","none")
-		.attr("x",function(d) { return xScale_table(0) +3;})
-		.attr("y",function(d) {return yScale_table(d.rank);})
-		.attr("visibility","hidden")
-		.attr("dy",".35em")
-		.text(function(d) {
-			return d.wins + " wins"; 
-	});	
+svg_table.selectAll(".win_text").data(season)
+.attr("class",function(d,i) {return "wins_text_" + i + " win_text";})
+.attr("pointer-events","none")
+.attr("x",function(d) { return xScale_table(0) +3;})
+.attr("y",function(d) {return yScale_table(d.rank);})
+.attr("visibility","hidden")
+.attr("dy",".35em")
+.text(function(d) {
+	return d.wins + " wins"; 
+});	
 
-	svg_table.selectAll(".draw_text").data(season)
-		.attr("class",function(d,i) {return "draws_text_" + i + " draw_text";})
-		.attr("pointer-events","none")
-		.attr("x",function(d) { return xScale_table(d.wins*3) + 3;})
-		.attr("y",function(d) {return yScale_table(d.rank);})
-		.attr("visibility","hidden")
-		.attr("dy",".35em")
-		.text(function(d) {
-			return d.draws + " draws"; 
-	});	
+svg_table.selectAll(".draw_text").data(season)
+.attr("class",function(d,i) {return "draws_text_" + i + " draw_text";})
+.attr("pointer-events","none")
+.attr("x",function(d) { return xScale_table(d.wins*3) + 3;})
+.attr("y",function(d) {return yScale_table(d.rank);})
+.attr("visibility","hidden")
+.attr("dy",".35em")
+.text(function(d) {
+	return d.draws + " draws"; 
+});	
 
-	svg_table.selectAll(".loss_text").data(season)
-		.attr("class",function(d,i) {return "losses_text_" + i + " loss_text";})
-		.attr("pointer-events","none")
-		.attr("x",function(d) { return xScale_table(d.wins*3 +d.draws) +3 })
-		.attr("y",function(d) {return yScale_table(d.rank);})
-		.attr("visibility","hidden")
-		.attr("dy",".35em")
-		.text(function(d) {
-			return d.losses + " losses"; 
-	});	
+svg_table.selectAll(".loss_text").data(season)
+.attr("class",function(d,i) {return "losses_text_" + i + " loss_text";})
+.attr("pointer-events","none")
+.attr("x",function(d) { return xScale_table(d.wins*3 +d.draws) +3 })
+.attr("y",function(d) {return yScale_table(d.rank);})
+.attr("visibility","hidden")
+.attr("dy",".35em")
+.text(function(d) {
+	return d.losses + " losses"; 
+});	
 }
 
 </script>
