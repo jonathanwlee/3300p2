@@ -309,6 +309,10 @@ function genGraph (teamdata)
 	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
 		.style("font-weight","bold").style("font-size",20)
 		.text("Cumulative " + d3.select("#metricsel").node().value + " over the Season");
+	
+		svg.append("text").attr("x",width/2 + 30).attr("y",40)
+		.style("font-weight","bold").style("font-size",14)
+		.text("(Hover over points to see game details)");
 	}
 	else
 	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
@@ -336,9 +340,7 @@ function genGraph (teamdata)
 			.attr("r", 6).style("fill", color(t));
 		}
 		
-		//Display game details when hovering (only in non-cumulative mode)
-		if (!document.getElementById("toggle").checked)
-		{
+		//Display game details when hovering
 			var sel = svg.selectAll("circle[id='"+teamstats[t].team+"']");
 			sel.data(teamstats[t].games).enter();
 			sel.on("mouseover",function(){
@@ -370,7 +372,7 @@ function genGraph (teamdata)
 			.on("mouseout",function(){d3.select(this).style("stroke","none");
 			d3.selectAll("rect.popup").remove();
 			d3.selectAll("text.popup").remove();});
-		}
+		
 	}
 
 
