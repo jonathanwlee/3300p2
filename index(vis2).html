@@ -33,6 +33,7 @@
 		<option value="Goals">Goals</option>
 		<option value="Penalties">Penalties</option>
 		<option value="Saves">Saves</option>
+		<option value="Goals Conceded">Goals Conceded</option>
 	</select>
 
 	<div class="label">Select Teams to Display Data:</div>
@@ -102,7 +103,7 @@ function processData (rows)
 		{
 			var stats = {team:away, shots:[as],corner:[acn],cross:[acr],
 			goals:[ag],pens:[ap],saves:[asv], home:[home], away:[away],date:[date],
-			venue:[venue]};
+			venue:[venue], goalc:[hg]};
 			teamdata.push(stats);
 		}
 		else
@@ -117,13 +118,14 @@ function processData (rows)
 			teamdata[a].away.push(away);
 			teamdata[a].date.push(date);
 			teamdata[a].venue.push(venue);
+			teamdata[a].goalc.push(hg);
 		}
 		
 		if (h == -1)
 		{
 			var stats = {team:home, shots:[hs],corner:[hcn],cross:[hcr],
 			goals:[hg],pens:[hp],saves:[hsv], home:[home], away:[away], date:[date],
-			venue:[venue]};
+			venue:[venue], goalc:[ag]};
 			teamdata.push(stats);
 		}
 		else
@@ -137,7 +139,8 @@ function processData (rows)
 			teamdata[h].home.push(home);
 			teamdata[h].away.push(away);
 			teamdata[h].date.push(date);
-			teamdata[h].venue.push(venue);			
+			teamdata[h].venue.push(venue);		
+			teamdata[h].goalc.push(ag);
 		}	
 	}
 	return teamdata;
@@ -269,6 +272,22 @@ function genGraph (teamdata)
 					}
 				}
 				break;
+		case "Goals Conceded":
+			for (var i = 0; i <teamdata.length;i++)
+			{
+				if (teams.indexOf(teamdata[i].team)!= -1)
+				{
+					var gamedets = [];
+					for (var t=0;t<teamdata[i].goalc.length;t++)
+					{
+						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+					}
+					teamstats.push({team:teamdata[i].team,data:teamdata[i].goalc.slice()
+					,games:gamedets});
+				}
+			}
+			break;
 	}
 	test = teamstats;
 	//Check to See if Data should be displayed cumulatively or not
