@@ -64,30 +64,51 @@
 
 	/* Vis2*/
 	line {stroke:black}
-	text {text-anchor: middle; alignment-baseline:middle; font-family: Arial}
+	.container text {text-anchor: middle; alignment-baseline:middle;}
 	text.popup {font-size: 10; font-family: Arial}
-	.axis path {fill: none; stroke:black;stroke-width:2;}
+	.axis path {fill: none; stroke:black;stroke-width:1;}
 	.axis line {stroke:black;}
 	.axis text {font-size:.75em; fill:black}
 	path.plot {fill:none; stroke-width:2}
-	h2 {margin-left:125px}
 	rect.popup {width: 170; height: 50; rx: 6; ry: 6; fill: DarkSalmon}
 	
 	div.container {position: relative; width: 1700px;}
 	div.chart {position: absolute; top: 40px; left: 0px;}
-	div.in {position: absolute; right: 100px;}
-	div.label {font-size:16px; font-weight:bold; margin-bottom: 10px;
-	margin-top: 10px; font-family: Arial}
-	div.legend {position:absolute; top: 100px;right:380px;}
+	div.in {position: absolute; right: 160px;}
+	div.label {font-size:16px; font-weight:normal; margin-bottom: 10px;
+	margin-top: 10px; }
+	div.legend {position:absolute; top: 100px;right:395px; }
+	div.in {font-size:12px; }
+	select {
+	    border: 1px solid #111;
+	    background: transparent;
+	    padding: 5px;
+	    font-size: 12px;
+	    border: 1px solid #ccc;
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+	    appearance: none;
+	}
+
+	.p_text { width: 50%;}
+	.p_quote {width:50%; font-style: italic;color:gray;}
 
 </style>
 </head>
 
 <body>
-<h1>The Premier League at a Glance</h1>
-<p>Leicester City are on track ...</p>
+<p class="p_text">With four weeks left to the English Premier League season, Leicester City are in the prime position to be crowned as champions with a five point lead ahead
+of second place Tottenham. An improbable run, Leicester City has carried itself from fighting relegation to the lower leagues of English Football to becoming
+a powerhouse topping the table all in the span of one season.</p>
+
+<p class="p_quote">"It could quite possibly be the greatest sporting upset of all time if Leicester won the Premier League from where they were a year ago." - Garry Lineker
+</p>
+
+<p class="p_text">Here, we take a look at</p>
+
+<h2>The Premier League at a Glance</h2>
+
 <div id="slider"></div>
-	
 <script>
 	var startPos = 5; 
 	$( "#slider" ).slider({
@@ -850,7 +871,7 @@ function genGraph (teamdata)
 	svg.selectAll("*").remove();
 	
 	svg.append("rect").attr("height",height-padding*2).attr("width",width)
-	.attr("x",padding).attr("y",padding).style("fill", "black").style("opacity",.1);
+	.attr("x",padding).attr("y",padding).style("fill", "black").style("opacity",0);
 	
 	//See which teams are selected for comparison
 	var teams = [];
@@ -1018,27 +1039,27 @@ function genGraph (teamdata)
 	//Axis Labels and Chart Title
 	if (document.getElementById("toggle").checked)
 	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
-		.style("font-weight","bold").style("font-size",20)
+		.style("font-weight","normal").style("font-size",20)
 		.text("Cumulative " + d3.select("#metricsel").node().value + " over the Season");
 	
 		svg.append("text").attr("x",width/2 + 30).attr("y",40)
-		.style("font-weight","bold").style("font-size",14)
+		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
 	else
 	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
-		.style("font-weight","bold").style("font-size",20)
+		.style("font-weight","normal").style("font-size",20)
 		.text(d3.select("#metricsel").node().value + " per Game");
 		
 		svg.append("text").attr("x",width/2 + 30).attr("y",40)
-		.style("font-weight","bold").style("font-size",14)
+		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
 	svg.append("text").attr("x",padding).attr("y",250)
 	.attr("transform", "translate (-240,300) rotate(-90)")
-	.style("font-weight","bold").text(d3.select("#metricsel").node().value); ;
+	.style("font-weight","normal").text(d3.select("#metricsel").node().value); ;
 	svg.append("text").attr("y",yScale(0)+32).attr("x",width-20)
-	.style("font-weight", "bold").text("Week");
+	.style("font-weight", "normal").text("Week");
 
 	//Plot Points
 	var color = d3.scale.category20();
@@ -1083,9 +1104,7 @@ function genGraph (teamdata)
 			.on("mouseout",function(){d3.select(this).style("stroke","none");
 			d3.selectAll("rect.popup").remove();
 			d3.selectAll("text.popup").remove();});
-		
 	}
-
 
 	//Plot Paths
 	var week;
@@ -1115,7 +1134,7 @@ function genGraph (teamdata)
 		.attr("width", 10).attr("height",10).style("fill",color(t));
 		
 		legend.append("text").attr("x",52).attr("y", t*space+10)
-		.style("font-size", 10).text(teamstats[t].team);
+		.style("font-size", "11px").text(teamstats[t].team);
 	}
 	
 }
