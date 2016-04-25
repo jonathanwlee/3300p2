@@ -6,9 +6,10 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
 <style>
-	body {font-family:"Lato";}
+	body {font-family:"Open Sans"; padding-left:15px;}
 	.circles_text_table { font-size: 10px; fill:white; text-anchor:middle; alignment-baseline:auto;}
 
 	.points_bar_table { fill:#e0e0e0;}
@@ -90,23 +91,35 @@
 	    appearance: none;
 	}
 
-	.p_text { width: 50%;}
-	.p_quote {width:50%; font-style: italic;color:gray;}
+	.p_text { width: 50%; font-size:12px;}
+	.p_quote {width:50%; font-size:14px; font-style: italic; color:gray;}
 
 </style>
 </head>
 
 <body>
-<p class="p_text">With four weeks left to the English Premier League season, Leicester City are in the prime position to be crowned as champions with a five point lead ahead
-of second place Tottenham. An improbable run, Leicester City has carried itself from fighting relegation to the lower leagues of English Football to becoming
-a powerhouse topping the table all in the span of one season.</p>
+<h1>Leicester City: An Improbable Story</h1>
 
+<p class="p_text">With four weeks left to the English Premier League season, Leicester City are in the prime position to be crowned as champions with a five point lead ahead
+of second place Tottenham. After just one season, Leicester City has carried itself from fighting relegation to the lower leagues of English Football to becoming
+a powerhouse topping the table. </p>
 <p class="p_quote">"It could quite possibly be the greatest sporting upset of all time if Leicester won the Premier League from where they were a year ago." - Garry Lineker
 </p>
 
-<p class="p_text">Here, we take a look at</p>
-
 <h2>The Premier League at a Glance</h2>
+
+<p class="p_text">
+The Premier League is the top division of English Football consisting of 20 teams. At the conclusion of every season, the lowest three teams are relegated to a lower division, while three teams from the Championship, the division just below, are promoted to the EPL. 
+
+Add text visualization here. 
+
+
+<br><br>Here, are the standings for the last ten seasons of the English Premier League. In the Premier League, a win awards three points, a draw one, and a loss zero points.
+After 38 weeks of gameplay, the team with the highest points is crowned the champion. Ties are broken by goal differential, the number of goals scored minus the number of goals conceded. Select seasons using the slider below. 
+<br><br>Hover over individual bars to see point breakdowns by wins and draws as well as possible final standings from losses converted to wins. Click to maintain the breakdown format or revert back to points. 
+The arrows signify movement in position from the previous season. 
+</p>
+
 
 <div id="slider"></div>
 <script>
@@ -733,8 +746,20 @@ function update_season(season) {
 
 </script>
 
+<h2>Defying the Odds</h2>
+<p class="p_text">
+Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Hover over
+individual nodes to see game details and stats. 
+</p>
 
+<h2>Add Title here</h2>
 
+<p class="p_text">
+A fairy tale of a story, no one can seem to explain the sheer dominance and rise of Leicester City. Does taking a look at straight
+metrics help shine light on the club's incredible success? Take a look for yourself below. Hover over nodes for additional game details.
+<br>
+<br>Ultimately perhaps a combination of sheer determination, tactical genius, and a bit of luck have carried Leicester to a historic season.  
+</p>
 <div class="container">
 	<div class="in">
 	<input type="checkbox" id="toggle">Check to See Cumulative Season Data<br>
@@ -1119,13 +1144,12 @@ function genGraph (teamdata)
 		.attr("class","plot").attr("stroke", color(t));
 	}
 	
-	
 	//Generate legend
 	d3.select("#leg").select("svg").remove();
 	var legend = d3.select("#leg").append("svg").attr("width", 110)
 	.attr("height", teams.length*20);
 	legend.append("rect").attr("x", 0).attr("y",0)
-	.attr("width", 100).attr("height", teams.length*17).style("stroke", "black")
+	.attr("width", 100).attr("height", teams.length*16).style("stroke", "black")
 	.style("fill","none");
 	var space = 15;
 	for (var t=0;t < teamstats.length; t++)
