@@ -5,10 +5,6 @@
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script type="text/javascript" src="leicesterstats.json.js"></script>
 	<style type="text/css">
-		/*body {
-			font-family: sans-serif;
-			font-size: 11px;
-		}*/
 		.axis path,
 		.axis line {
 			fill: none;
@@ -36,7 +32,7 @@
   			height: 110px;                 
   			padding: 10px;             
   			font: 12px sans-serif;        
-  			background: goldenrod;   
+  			background: lightblue;   
   			border: 0px;      
   			border-radius: 8px;           
   			pointer-events: none;         
@@ -58,7 +54,7 @@
 	
 	var dataset = [];
 	for (var i = 0; i < leicester_data.length; i++) {
-		dataset.push([leicester_data[i].Week,leicester_data[i].Odds]);
+		dataset.push([leicester_data[i].Week,leicester_data[i].Odds,leicester_data[i].Image]);
 	}
 
 	//create graph
@@ -114,28 +110,38 @@
       .style("stroke", "gray")
       .style("stroke-width", "2");
 
-    //create circles for points
-    for (var i = 0; i < dataset.length; i++) {
-		svg.append("circle")
-			.attr("cx", xScale(dataset[i][0]))
-			.attr("cy", yScale(dataset[i][1]))
-			.attr("r", 6)
-			.style("fill", "silver")
-			.style("stroke", "gray")
-			.style("stroke-width", "2")
-			.on("mouseover", function() {
-				d3.select(this)
-					.style("stroke", "darkblue")
-					.style("stroke-width", "4")
-					.style("fill", "lightblue");
-			});          
+	//create images for points
+	for (var i = 0; i < dataset.length; i++) {
+		svg.append("image")
+			.attr("x", xScale(dataset[i][0])-10)
+			.attr("y", yScale(dataset[i][1])-10)
+			.attr("xlink:href", dataset[i][2])
+			.attr("height", "20px")
+			.attr("width", "20px");          
 	}
+
+	//   //create circles for points
+ //    for (var i = 0; i < dataset.length; i++) {
+	// 	svg.append("circle")
+	// 		.attr("cx", xScale(dataset[i][0]))
+	// 		.attr("cy", yScale(dataset[i][1]))
+	// 		.attr("r", 6)
+	// 		.style("fill", "none")
+	// 		.style("stroke", "gray")
+	// 		.style("stroke-width", "2")
+	// 		.on("mouseover", function() {
+	// 			d3.select(this)
+	// 				.style("stroke", "darkblue")
+	// 				.style("stroke-width", "4")
+	// 				.style("fill", "lightblue");
+	// 		});          
+	// }
 
 	//create tooltips
 	var div = d3.select("body").append("div")   
     	.attr("class", "tooltip")               
     	.style("opacity", 0);
-	svg.selectAll("circle")
+	svg.selectAll("image")
 		.data(leicester_data)
 		.on("mouseover", function(d) {            
 				div.transition()        
@@ -144,21 +150,21 @@
             	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result + "<br/>" + "<b/>Shot Accuracy: </b/>" + d.ShotAccuracy + "<br/>" + "<b/>Possession: </b/>" + d.Possession + "<br/>" + "<b/>Pass Accuracy: </b/>" + d.PassAccuracy)  
             	    .style("left", (d3.event.pageX) + "px")     
             	    .style("top", (d3.event.pageY) + "px"); 
-            	d3.select(this)
-            		.attr("r", 8)
-					.style("stroke", "blue")
-					.style("stroke-width", "4")
-					.style("fill", "lightblue");
+     //        	d3.select(this)
+     //        		.attr("r", 8)
+					// .style("stroke", "blue")
+					// .style("stroke-width", "4")
+					// .style("fill", "lightblue");
             })
 		.on("mouseout", function(d) {       
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);
-            d3.select(this)
-            	.attr("r", 6)
-				.style("fill", "silver")
-    			.style("stroke", "gray")
-    			.style("stroke-width", "2");  
+    //         d3.select(this)
+    //         	.attr("r", 6)
+				// .style("fill", "silver")
+    // 			.style("stroke", "gray")
+    // 			.style("stroke-width", "2");  
         });
 	
 
