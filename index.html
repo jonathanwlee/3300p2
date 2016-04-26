@@ -769,10 +769,14 @@ function update_season(season) {
 </script>
 
 <h2>Defying the Odds</h2>
+<p class="p_text">
+Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Hover over
+individual nodes to see game details and stats. 
+</p>
 <div id="graph3"></div>
 <script>
 	var width = 1200;
-	var height = 800;
+	var height = 450;
 	var padding = 50;
 	var svg = d3.select("#graph3")
 				.append("svg")
@@ -897,19 +901,14 @@ function update_season(season) {
 
 
 </script>
-
-<p class="p_text">
-Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Hover over
-individual nodes to see game details and stats. 
-</p>
-
 <h2>Searching for the Key</h2>
 
 <p class="p_text">
 A fairy tale of a story, no one can seem to explain the sheer dominance and rise of Leicester City. Does taking a look at straight
 metrics help shine light on the club's incredible success? Take a look for yourself below. Hover over nodes for additional game details.
 <br>
-<br>Ultimately perhaps a combination of sheer determination, tactical genius, and a bit of luck have carried Leicester to a historic season.  
+<br>Ultimately perhaps a combination of sheer determination, tactical genius, and a bit of luck have carried Leicester to a historic season. This season, 
+data just might not tell the whole story. 
 </p>
 <div class="container">
 	<div class="in">
@@ -1319,6 +1318,7 @@ d3.selectAll("#metricsel").on("change", function(){genGraph(data)});
 d3.selectAll("input").on("change", function(){genGraph(data)});
 
 </script>
+
 
 
 
