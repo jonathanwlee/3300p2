@@ -95,6 +95,8 @@
 
 	.p_text { width: 50%; font-size:12px;}
 	.p_quote {width:50%; font-size:14px; font-style: italic; color:gray;}
+	.p_citation { font-size:10px; margin-top: 0px;}
+
 	/*Vis3*/
 	.label {
 			font-family: sans-serif;
@@ -199,6 +201,9 @@ The arrows signify movement in position from the previous season.
 </script>
 
 <div id="table"></div>
+<p class="p_citation">* '15-'16 season is as of 4/26/2016 </p>
+<p class="p_citation">Source: https://github.com/jokecamp/FootballData </p>
+
 
 <script>
 var height_table = 600;
@@ -773,12 +778,12 @@ function update_season(season) {
 Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Hover over
 individual nodes to see game details and stats. 
 </p>
-<div id="graph3"></div>
+<div id="odds"></div>
 <script>
 	var width = 1200;
 	var height = 450;
 	var padding = 50;
-	var svg = d3.select("#graph3")
+	var svg = d3.select("#odds")
 				.append("svg")
 				.attr("width", width)
 				.attr("height", height);
@@ -851,29 +856,13 @@ individual nodes to see game details and stats.
 			.attr("width", "20px");          
 	}
 
-	//   //create circles for points
- //    for (var i = 0; i < dataset.length; i++) {
-	// 	svg.append("circle")
-	// 		.attr("cx", xScale(dataset[i][0]))
-	// 		.attr("cy", yScale(dataset[i][1]))
-	// 		.attr("r", 6)
-	// 		.style("fill", "none")
-	// 		.style("stroke", "gray")
-	// 		.style("stroke-width", "2")
-	// 		.on("mouseover", function() {
-	// 			d3.select(this)
-	// 				.style("stroke", "darkblue")
-	// 				.style("stroke-width", "4")
-	// 				.style("fill", "lightblue");
-	// 		});          
-	// }
-
 	//create tooltips
 	var div = d3.select("body").append("div")   
     	.attr("class", "tooltip")               
     	.style("opacity", 0);
 	svg.selectAll("image")
 		.data(leicester_data)
+		.on("click",function(d) { console.log("clicked");})
 		.on("mouseover", function(d) {            
 				div.transition()        
             	    .duration(200)      
@@ -881,26 +870,19 @@ individual nodes to see game details and stats.
             	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result + "<br/>" + "<b/>Shot Accuracy: </b/>" + d.ShotAccuracy + "<br/>" + "<b/>Possession: </b/>" + d.Possession + "<br/>" + "<b/>Pass Accuracy: </b/>" + d.PassAccuracy)  
             	    .style("left", (d3.event.pageX) + "px")     
             	    .style("top", (d3.event.pageY) + "px"); 
-     //        	d3.select(this)
-     //        		.attr("r", 8)
-					// .style("stroke", "blue")
-					// .style("stroke-width", "4")
-					// .style("fill", "lightblue");
+
             })
 		.on("mouseout", function(d) {       
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);
-    //         d3.select(this)
-    //         	.attr("r", 6)
-				// .style("fill", "silver")
-    // 			.style("stroke", "gray")
-    // 			.style("stroke-width", "2");  
         });
 	
 
 
 </script>
+<p class="p_citation">Source: Sky BET Premier League Betting Odds (https://www.skybet.com/football/premier-league)</p>
+
 <h2>Searching for the Key</h2>
 
 <p class="p_text">
@@ -953,6 +935,7 @@ data just might not tell the whole story.
 	</div>
 	<div class="legend" id="leg"></div>
 </div>
+
 <script>
 
 var data,test;
@@ -1319,6 +1302,7 @@ d3.selectAll("input").on("change", function(){genGraph(data)});
 
 </script>
 
+<p class="p_citation">Source: https://github.com/jargnar/premier-league-data/</p>
 
 
 
