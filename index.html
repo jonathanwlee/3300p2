@@ -1064,7 +1064,7 @@ function genGraph (teamdata)
 	if (tmp>max) max=tmp;});
 	
 	//Set Linear Scaling
-	var xScale = d3.scale.linear().domain([1, 32])
+	var xScale = d3.scale.linear().domain([0, 32])
 	.range([padding, width]);
 	var yScale = d3.scale.linear().domain([0,max])
 	.range([height-padding, padding]);
