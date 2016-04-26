@@ -372,5 +372,17 @@ var leicester_data = [
     "Possession": 45,
     "PassAccuracy": 70,
     "Image": "images/WestHamUnited.png"
+  },
+
+    {
+    "Week": 35,
+    "Date": "4/24/16",
+    "Match": "Leicester v Swansea",
+    "Odds": 0.20,   
+    "Result": "4-0 (W)",
+    "ShotAccuracy": 60,
+    "Possession": 44,
+    "PassAccuracy": 74,
+    "Image": "images/SwanseaCity.png"
   }
 ]

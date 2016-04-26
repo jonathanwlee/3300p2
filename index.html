@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Assignment 6 - Jonathan Lee - jwl274 </title>
+<title>Leicester City: An Improbable Story - Project 2 </title>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="leicesterstats.json.js"></script>
@@ -34,6 +34,8 @@ After 38 weeks of gameplay, the team with the highest points is crowned the cham
 <br><br>Hover over individual bars to see point breakdowns by wins and draws as well as possible final standings from losses converted to wins. Click to maintain the breakdown format or revert back to points. 
 The arrows signify movement in position from the previous season. 
 </p>
+
+<p>In the last <span class="span_emphasis">10</span> seasons, the champion has never placed worse than the <span class="span_emphasis">top 3</span> the previous season.</p>
 
 
 <div id="slider"></div>
@@ -70,7 +72,6 @@ The arrows signify movement in position from the previous season.
 
   $("#slider").on("slidestop", function(event, ui) {
     endPos = ui.value;
-    console.log(endPos);
     if (startPos != endPos) {
 
 	if (endPos ==10 ) {last_season = season_14_15; update_season(season_15_16);}
@@ -92,8 +93,7 @@ The arrows signify movement in position from the previous season.
 </script>
 
 <div id="table"></div>
-<p class="p_citation">* '15-'16 season is as of 4/26/2016 </p>
-<p class="p_citation">Source: https://github.com/jokecamp/FootballData </p>
+<p class="p_citation">* '15-'16 season is as of 4/26/2016 <br>Source: https://github.com/jokecamp/FootballData </p>
 
 
 <script>
@@ -107,7 +107,7 @@ var circles_table,circles_text_table;
 var club_images_table, club_text_table;
 var points_bar_table,points_text_table,bar_table;
 var win_bar_table,draw_bar_table,loss_bar_table;
-var xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
+var xScale_table = d3.scale.linear().domain([0,114]).range([padding_table+190,width_table]);
 var season_05_06,season_06_07,season_07_08,season_08_09,season_09_10,season_10_11,season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
 var current_season = "season_15_16";
 var points_bars; 
@@ -151,7 +151,7 @@ circles_table = svg_table.selectAll(".circles_table").data(season_15_16);
 circles_table.enter().append("circle")
 	.attr("class","circles_table")
 	.attr("r",10)
-	.attr("fill","#2166ac")
+	.attr("fill","#215aac")
 	.attr("cx",padding_table)
 	.attr("cy",function(d) {
 		return yScale_table(d.rank);
@@ -374,7 +374,7 @@ arrow_table.enter().append("text")
 	if (result[1] == 0) { 
 		return "arrow_table_up" + " arrow_table_" +i + " arrow";
 	}
-	else if (result[1] ==1) { 
+	else if (result[1] == 1) { 
 		return "arrow_table_down" + " arrow_table_" +i + " arrow";
 	}
 	else { 
@@ -426,15 +426,7 @@ function lastSeason (d,i) {
 /*
 Updates season data based off selected season on slider. Makes appropriate changes to all elements. 
 */
-function update_season(season) {
-	//Current season is not finished. Scale is based off max number of points capable of reaching. 
-	if (season == season_15_16) { 
-		xScale_table = d3.scale.linear().domain([0,102]).range([padding_table+190,width_table]);
-	}
-	else { 
-		xScale_table = d3.scale.linear().domain([0,114]).range([padding_table+190,width_table]);
-	}
-
+function update_season(season) {	
 	//Reset Clicked Array for use in click events
 	for (p=0;p<20;p++) { 
 		clicked_array[p] = 0;
@@ -670,8 +662,9 @@ Result after result, Leicester has convinced onlookers that the seemingly improb
 individual nodes to see game details and stats. 
 </p>
 <div id="odds"></div>
+
 <script>
-	var width = 1200;
+	var width = 1100;
 	var height = 450;
 	var padding = 50;
 	var svg = d3.select("#odds")
@@ -699,7 +692,7 @@ individual nodes to see game details and stats.
 		.scale(yScale)
 		.orient("left")
 		.ticks(10)
-		.tickValues([0, 80, 350, 750, 1300, 2000, 5000]);
+		.tickValues([0, 10, 100, 500, 1000, 2000, 2500, 5000]);
 	svg.append("g")
 		.attr("class", "axis")
 		.attr("transform", "translate(0," + (height - padding) + ")")
@@ -822,7 +815,7 @@ data just might not tell the whole story.
 	</form>
 	</div>
 	<div class="chart">
-		<svg id="graph" width="1200" height="500"></svg>
+		<svg id="graph" width="1100" height="500"></svg>
 	</div>
 	<div class="legend" id="leg"></div>
 </div>
@@ -915,7 +908,6 @@ function genGraph (teamdata)
 	var width = svg.attr("width");
 	var height = svg.attr("height");
 	var padding = 60;
-	
 	//Clear svg
 	svg.selectAll("*").remove();
 	
@@ -1192,10 +1184,7 @@ d3.selectAll("#metricsel").on("change", function(){genGraph(data)});
 d3.selectAll("input").on("change", function(){genGraph(data)});
 
 </script>
-
-<p class="p_citation">Source: https://github.com/jargnar/premier-league-data/</p>
-
-
+<p class="p_citation">*Data as of 3/20/2016 <br>Source: https://github.com/jargnar/premier-league-data/ </p>
 
 </body>
 </html>	
