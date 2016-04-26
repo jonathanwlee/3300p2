@@ -992,21 +992,21 @@ function processData (rows)
 			var stats = {team:away, shots:[as],corner:[acn],cross:[acr],
 			goals:[ag],pens:[ap],saves:[asv], home:[home], away:[away],date:[date],
 			venue:[venue], goalc:[hg]};
-			teamdata.push(stats);
+			teamdata.unshift(stats);
 		}
 		else
 		{
-			teamdata[a].shots.push(as);
-			teamdata[a].corner.push(acn);
-			teamdata[a].cross.push(acr);
-			teamdata[a].goals.push(ag);
-			teamdata[a].pens.push(ap);	
-			teamdata[a].saves.push(asv);
-			teamdata[a].home.push(home);
-			teamdata[a].away.push(away);
-			teamdata[a].date.push(date);
-			teamdata[a].venue.push(venue);
-			teamdata[a].goalc.push(hg);
+			teamdata[a].shots.unshift(as);
+			teamdata[a].corner.unshift(acn);
+			teamdata[a].cross.unshift(acr);
+			teamdata[a].goals.unshift(ag);
+			teamdata[a].pens.unshift(ap);	
+			teamdata[a].saves.unshift(asv);
+			teamdata[a].home.unshift(home);
+			teamdata[a].away.unshift(away);
+			teamdata[a].date.unshift(date);
+			teamdata[a].venue.unshift(venue);
+			teamdata[a].goalc.unshift(hg);
 		}
 		
 		if (h == -1)
@@ -1014,21 +1014,21 @@ function processData (rows)
 			var stats = {team:home, shots:[hs],corner:[hcn],cross:[hcr],
 			goals:[hg],pens:[hp],saves:[hsv], home:[home], away:[away], date:[date],
 			venue:[venue], goalc:[ag]};
-			teamdata.push(stats);
+			teamdata.unshift(stats);
 		}
 		else
 		{
-			teamdata[h].shots.push(hs);
-			teamdata[h].corner.push(hcn);
-			teamdata[h].cross.push(hcr);
-			teamdata[h].goals.push(hg);
-			teamdata[h].pens.push(hp);
-			teamdata[h].saves.push(hsv);
-			teamdata[h].home.push(home);
-			teamdata[h].away.push(away);
-			teamdata[h].date.push(date);
-			teamdata[h].venue.push(venue);		
-			teamdata[h].goalc.push(ag);
+			teamdata[h].shots.unshift(hs);
+			teamdata[h].corner.unshift(hcn);
+			teamdata[h].cross.unshift(hcr);
+			teamdata[h].goals.unshift(hg);
+			teamdata[h].pens.unshift(hp);
+			teamdata[h].saves.unshift(hsv);
+			teamdata[h].home.unshift(home);
+			teamdata[h].away.unshift(away);
+			teamdata[h].date.unshift(date);
+			teamdata[h].venue.unshift(venue);		
+			teamdata[h].goalc.unshift(ag);
 		}	
 	}
 	return teamdata;
