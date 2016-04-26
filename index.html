@@ -817,6 +817,7 @@ data just might not tell the whole story.
 	<div class="chart">
 		<svg id="graph" width="1100" height="500"></svg>
 	</div>
+	<p class="cite">*Data as of 3/20/2016 <br>Source: https://github.com/jargnar/premier-league-data/ </p>
 	<div class="legend" id="leg"></div>
 </div>
 
@@ -1063,7 +1064,7 @@ function genGraph (teamdata)
 	if (tmp>max) max=tmp;});
 	
 	//Set Linear Scaling
-	var xScale = d3.scale.linear().domain([0, 32])
+	var xScale = d3.scale.linear().domain([1, 32])
 	.range([padding, width]);
 	var yScale = d3.scale.linear().domain([0,max])
 	.range([height-padding, padding]);
@@ -1109,7 +1110,7 @@ function genGraph (teamdata)
 		for (var i=0; i < teamstats[t].data.length; i++)
 		{
 			svg.append("circle").attr("id",teamstats[t].team)
-			.attr("cx", xScale(i)).attr("cy", yScale(teamstats[t].data[i]))
+			.attr("cx", xScale(i+1)).attr("cy", yScale(teamstats[t].data[i]))
 			.attr("r", 6).style("fill", color(t));
 		}
 		
@@ -1135,11 +1136,11 @@ function genGraph (teamdata)
 				svg.append("text").attr("class","popup").attr("x",circposx+12)
 				.attr("y",circposy-40).text("Away Team: " + inf[0].away);
 				
-				svg.append("text").attr("class","popup").attr("x",circposx+12)
+				svg.append("text").attr("class","popup").attr("x",circposx+18)
 				.attr("y",circposy-30).text("Date: " + inf[0].dat);
-				
+
 				svg.append("text").attr("class","popup").attr("x",circposx+12)
-				.attr("y",circposy-20).text("Venue: " + inf[0].ven);
+				.attr("y",circposy-20).text("Venue: "  + inf[0].ven);
 				
 			})
 			.on("mouseout",function(){d3.select(this).style("stroke","none");
@@ -1150,7 +1151,7 @@ function genGraph (teamdata)
 	//Plot Paths
 	var week;
 	var plotline = d3.svg.line()
-	.x(function (d){week++; return xScale(week)})
+	.x(function (d){week++; return xScale(week+1)})
 	.y(function (d) {return yScale(d)});
 	
 	for (var t=0; t < teamstats.length; t++)
@@ -1184,7 +1185,5 @@ d3.selectAll("#metricsel").on("change", function(){genGraph(data)});
 d3.selectAll("input").on("change", function(){genGraph(data)});
 
 </script>
-<p class="p_citation">*Data as of 3/20/2016 <br>Source: https://github.com/jargnar/premier-league-data/ </p>
-
 </body>
 </html>	
