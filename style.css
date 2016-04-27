@@ -114,3 +114,6 @@ div.tooltip {
 .odds_image { 
 cursor:pointer;
 }
+.leicester_bar_possession,.leicester_bar_pass{ fill:#638bc4;}
+.champions_bar_possession,.champions_bar_pass{fill:#215aac;}
+.label_leicester_possession,.label_leicester_pass,.label_champions_possession,.label_champions_pass {fill:white; font-size:10px; text-anchor:middle;}

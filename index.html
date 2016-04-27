@@ -669,7 +669,7 @@ individual nodes to see game details and stats.
 	var width_odds = 1200;
 	var height_odds = 450;
 	var padding_odds = 70;
-	var svg = d3.select("#odds")
+	var svg_odds = d3.select("#odds")
 				.append("svg")
 				.attr("width", width_odds)
 				.attr("height", height_odds);
@@ -687,8 +687,6 @@ individual nodes to see game details and stats.
 		.domain([0,2500,3000,d3.max(dataset,function(d) {return d[1];})])
 		.range([height_odds - padding_odds, padding_odds, padding_odds/2, padding_odds/4]);
 
-	var xScale_Stats = d3.scale.linear().domain([0,100]).range([0,400]);
-
 	var xAxis = d3.svg.axis()
 		.scale(xScale)
 		.orient("bottom")
@@ -698,41 +696,25 @@ individual nodes to see game details and stats.
 		.orient("left")
 		.ticks(10)
 		.tickValues([0, 10, 100, 500, 1000, 2000, 2500, 5000]);
-	svg.append("g")
+	svg_odds.append("g")
 		.attr("class", "axis")
 		.attr("transform", "translate(0," + (height_odds - padding_odds) + ")")
 		.call(xAxis);
-	svg.append("g")
+	svg_odds.append("g")
 		.attr("class", "axis")
 		.attr("transform", "translate(" + padding_odds + ",0)")
 		.call(yAxis);
 
-	svg.append("text")
+	svg_odds.append("text")
     	.attr("x", (width_odds-padding_odds)/2)
     	.attr("y",yScale(0)+50)
     	.text("Week");
 
-    svg.append("text")
+    svg_odds.append("text")
     	.attr("x",padding_odds)
     	.attr("y",260)
 		.attr("transform", "translate (-240,300) rotate(-90)")
 		.text("Betting Odds");
-
-	svg.append("rect")
-		.attr("class","statistics_bar_possession")
-		.attr("visibility","hidden")
-		.attr("height",20)
-		.attr("width",0)
-		.attr("x",width_odds/1.5)
-		.attr("y",padding_odds);
-
-	svg.append("rect")
-		.attr("class","statistics_bar_pass_accuracy")
-		.attr("visibility","hidden")
-		.attr("height",20)
-		.attr("width",0)
-		.attr("x",width_odds/1.5)
-		.attr("y",padding_odds);	
 
     //create line graph
 	var line = d3.svg.line()
@@ -743,7 +725,7 @@ individual nodes to see game details and stats.
 			return yScale(d[1]); 
 		})
 
-	svg.append("path")
+	svg_odds.append("path")
       .datum(dataset)
       .attr("class", "line")
       .attr("d", line)
@@ -753,7 +735,7 @@ individual nodes to see game details and stats.
 
 	//create images for points
 	for (var i = 0; i < dataset.length; i++) {
-		svg.append("image")
+		svg_odds.append("image")
 			.attr("x", xScale(dataset[i][0])-10)
 			.attr("y", yScale(dataset[i][1])-10)
 			.attr("xlink:href", dataset[i][2])
@@ -766,15 +748,23 @@ individual nodes to see game details and stats.
 	var div = d3.select("body").append("div")   
     	.attr("class", "tooltip")               
     	.style("opacity", 0);
-	svg.selectAll("image")
+	svg_odds.selectAll("image")
 		.data(leicester_data)
-		.on("click",function(d) { console.log("clicked");})
+		.on("click",function(d) {
+			svg_game_stats.select(".leicester_bar_possession").transition().attr("width",xScale_Stats(d.Possession));
+			svg_game_stats.select(".leicester_bar_pass").transition().attr("width",xScale_Stats(d.PassAccuracy));
+			svg_game_stats.select(".game_stats_match").text("Match: " + d.Match);
+
+			svg_game_stats.select(".label_leicester_possession").transition().delay(250).text(d.Possession + "%").attr("x",xScale_Stats(d.Possession) + padding_stats - 22);
+			svg_game_stats.select(".label_leicester_pass").transition().delay(250).text(d.PassAccuracy + "%").attr("x",xScale_Stats(d.PassAccuracy) + padding_stats - 22);
+
+		})
 		.on("mouseover", function(d) {      
 
 			div.transition()        
         	    .duration(200)      
         	    .style("opacity", .9);      
-        	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result + "<br/>" + "<b/>Shot Accuracy: </b/>" + d.ShotAccuracy + "<br/>" + "<b/>Possession: </b/>" + d.Possession + "<br/>" + "<b/>Pass Accuracy: </b/>" + d.PassAccuracy)  
+        	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result + "<br/>" + "<b/>Shot Accuracy: </b/>" + d.ShotAccuracy)  
         	    .style("left", (d3.event.pageX) + "px")     
         	    .style("top", (d3.event.pageY) + "px"); 
 
@@ -785,8 +775,92 @@ individual nodes to see game details and stats.
                 .style("opacity", 0);
         });	
 </script>
+<div id ="game_stats"></div>
 
-<p class="p_citation">Source: Sky BET Premier League Betting Odds (https://www.skybet.com/football/premier-league)</p>
+<script>
+var height_game_stats = 150;
+var padding_stats = 70;
+var svg_game_stats = d3.select("#game_stats").append("svg").attr("width",width_odds).attr("height",height_game_stats);
+
+var xScale_Stats = d3.scale.linear().domain([0,100]).range([padding_stats,width_odds-padding_stats]);
+
+svg_game_stats.append("rect")
+	.attr("class","champions_bar_pass")
+	.attr("visibility","visible")
+	.attr("height",20)
+	.attr("width",xScale_Stats(82.99))
+	.attr("x",padding_stats)
+	.attr("opacity",1)
+	.attr("y",45);
+
+svg_game_stats.append("rect")
+	.attr("class","champions_bar_possession")
+	.attr("visibility","visible")
+	.attr("height",20)
+	.attr("width",xScale_Stats(58.17))
+	.attr("x",padding_stats)
+	.attr("opacity",1)
+	.attr("y",95);
+
+svg_game_stats.append("rect")
+	.attr("class","leicester_bar_pass")
+	.attr("height",20)
+	.attr("width",0)
+	.attr("x",padding_stats)
+	.attr("y",45);
+
+svg_game_stats.append("rect")
+	.attr("class","leicester_bar_possession")
+	.attr("height",20)
+	.attr("width",0)
+	.attr("x",padding_stats)
+	.attr("y",95);
+
+svg_game_stats.append("text")
+	.attr("x",padding_stats)
+	.attr("y",88)
+	.text("Possession (%) ");
+
+svg_game_stats.append("text")
+	.attr("x",padding_stats)
+	.attr("y",37)
+	.text("Pass Accuracy (%)");
+
+svg_game_stats.append("text")
+	.attr("class","game_stats_match")
+	.attr("x",padding_stats)
+	.attr("y",15)
+	.text("Match: ");
+
+//Text Elements for Bars
+svg_game_stats.append("text")
+	.attr("class","label_leicester_possession")
+	.attr("x",padding_stats)
+	.attr("y",95+14)
+
+svg_game_stats.append("text")
+	.attr("class","label_leicester_pass")
+	.attr("x",padding_stats)
+	.attr("y",45+14)
+
+//Text Elements for Bars
+svg_game_stats.append("text")
+	.attr("class","label_champions_possession")
+	.attr("x",xScale_Stats(58.17) + padding_stats - 24)
+	.attr("y",95+14)
+	.text("58%");
+
+svg_game_stats.append("text")
+	.attr("class","label_champions_pass")
+	.attr("x",xScale_Stats(82.99) + padding_stats - 24)
+	.attr("y",45+14)
+	.text("83%");
+
+
+</script>
+
+<p class="p_citation">Source: Sky BET Premier League Betting Odds (https://www.skybet.com/football/premier-league)<br>
+Source: http://www.bbc.com/sport/football/35553082</p>
 
 <h2>Searching for the Key</h2>
 
