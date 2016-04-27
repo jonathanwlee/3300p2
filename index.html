@@ -1132,17 +1132,29 @@ function genGraph (teamdata)
 				.attr("y",circposy-60);
 			
 				var inf = curr.data(); 
-				svg.append("text").attr("class","popup").attr("x",circposx+12)
-				.attr("y",circposy-50).text("Home Team: " + inf[0].home);
+				svg.append("text").attr("class","popup").attr("x",circposx-35)
+				.attr("y",circposy-50).style("font-weight","bold").text("Home Team: ");
 				
-				svg.append("text").attr("class","popup").attr("x",circposx+12)
-				.attr("y",circposy-40).text("Away Team: " + inf[0].away);
+				svg.append("text").attr("class","popup").attr("x",circposx+30)
+				.attr("y",circposy-50).text(inf[0].home);
 				
-				svg.append("text").attr("class","popup").attr("x",circposx+18)
-				.attr("y",circposy-30).text("Date: " + inf[0].dat);
+				svg.append("text").attr("class","popup").attr("x",circposx-35)
+				.attr("y",circposy-40).style("font-weight","bold").text("Away Team: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+30)
+				.attr("y",circposy-40).text(inf[0].away);
+				
+				svg.append("text").attr("class","popup").attr("x",circposx-53)
+				.attr("y",circposy-30).style("font-weight","bold").text("Date: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+30)
+				.attr("y",circposy-30).text(inf[0].dat);
 
-				svg.append("text").attr("class","popup").attr("x",circposx+12)
-				.attr("y",circposy-20).text("Venue: "  + inf[0].ven);
+				svg.append("text").attr("class","popup").attr("x",circposx-48)
+				.attr("y",circposy-20).style("font-weight","bold").text("Venue: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+20)
+				.attr("y",circposy-20).text(inf[0].ven);
 				
 			})
 			.on("mouseout",function(){d3.select(this).style("stroke","none");
