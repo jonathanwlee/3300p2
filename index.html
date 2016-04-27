@@ -732,7 +732,7 @@ individual nodes to see game details and stats.
 		.on("click",function(d) {
 			svg_game_stats.select(".leicester_bar_possession").transition().attr("width",xScale_Stats(d.Possession));
 			svg_game_stats.select(".leicester_bar_pass").transition().attr("width",xScale_Stats(d.PassAccuracy));
-			svg_game_stats.select(".game_stats_match").text("Match: " + d.Match);
+			svg_game_stats.select(".game_stats_match").text("Match: " + d.Match + " - " + d.Result);
 
 			svg_game_stats.select(".label_leicester_possession").transition().text(d.Possession + "%").attr("x",xScale_Stats(d.Possession) + padding_stats - 24);
 			svg_game_stats.select(".label_leicester_pass").transition().text(d.PassAccuracy + "%").attr("x",xScale_Stats(d.PassAccuracy) + padding_stats - 24);
