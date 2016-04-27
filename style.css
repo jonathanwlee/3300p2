@@ -101,14 +101,14 @@ select {
 div.tooltip {   
 		position: absolute;           
 		text-align: left;           
-		width: 185px;                  
-		height: 110px;                 
+		width: 165px;                  
 		padding: 10px;             
 		font-size: 10px;        
 		background: lightblue;   
 		border: 0px;      
 		border-radius: 8px;           
-		pointer-events: none;         
+		pointer-events: none;      
+		z-index: 300;
 }
 
 .odds_image { 

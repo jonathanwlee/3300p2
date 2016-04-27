@@ -213,7 +213,7 @@ draw_bar_table.enter().append("rect")
 	.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
 	.attr("width", function(d) { 
 		return 0;
-	})
+	})	
 	.attr("height",table_bar_height);
 
 loss_bar_table = svg_table.selectAll(".loss_bar_table").data(season_15_16);
@@ -666,13 +666,13 @@ individual nodes to see game details and stats.
 <div id="odds"></div>
 
 <script>
-	var width = 1100;
-	var height = 450;
-	var padding = 50;
+	var width_odds = 1200;
+	var height_odds = 450;
+	var padding_odds = 70;
 	var svg = d3.select("#odds")
 				.append("svg")
-				.attr("width", width)
-				.attr("height", height);
+				.attr("width", width_odds)
+				.attr("height", height_odds);
 	
 	var dataset = [];
 	for (var i = 0; i < leicester_data.length; i++) {
@@ -682,10 +682,13 @@ individual nodes to see game details and stats.
 	//create graph
 	var xScale = d3.scale.linear()
 		.domain([0,d3.max(dataset,function(d) {return d[0];})])
-		.range([padding, width - padding]);
+		.range([padding_odds, width_odds - padding_odds]);
 	var yScale = d3.scale.sqrt()
 		.domain([0,2500,3000,d3.max(dataset,function(d) {return d[1];})])
-		.range([height - padding, padding, padding/2, padding/4]);
+		.range([height_odds - padding_odds, padding_odds, padding_odds/2, padding_odds/4]);
+
+	var xScale_Stats = d3.scale.linear().domain([0,100]).range([0,400]);
+
 	var xAxis = d3.svg.axis()
 		.scale(xScale)
 		.orient("bottom")
@@ -697,26 +700,39 @@ individual nodes to see game details and stats.
 		.tickValues([0, 10, 100, 500, 1000, 2000, 2500, 5000]);
 	svg.append("g")
 		.attr("class", "axis")
-		.attr("transform", "translate(0," + (height - padding) + ")")
+		.attr("transform", "translate(0," + (height_odds - padding_odds) + ")")
 		.call(xAxis);
 	svg.append("g")
 		.attr("class", "axis")
-		.attr("transform", "translate(" + padding + ",0)")
+		.attr("transform", "translate(" + padding_odds + ",0)")
 		.call(yAxis);
+
 	svg.append("text")
-    	.attr("x", width -padding)
-    	.attr("y",yScale(0) + 32)
+    	.attr("x", (width_odds-padding_odds)/2)
+    	.attr("y",yScale(0)+50)
     	.text("Week");
-    svg.append("text")
-    	.attr("x", 100)
-    	.attr("y", 200)
-    	.attr("transform", "translate (-240,300) rotate(-90)")
-    	.text("Betting Odds");
 
     svg.append("text")
-    	.attr("x",100)
-    	.attr("y",250)
-		.attr("transform", "translate (-240,300) rotate(-90)").text("Betting Odds");
+    	.attr("x",padding_odds)
+    	.attr("y",260)
+		.attr("transform", "translate (-240,300) rotate(-90)")
+		.text("Betting Odds");
+
+	svg.append("rect")
+		.attr("class","statistics_bar_possession")
+		.attr("visibility","hidden")
+		.attr("height",20)
+		.attr("width",0)
+		.attr("x",width_odds/1.5)
+		.attr("y",padding_odds);
+
+	svg.append("rect")
+		.attr("class","statistics_bar_pass_accuracy")
+		.attr("visibility","hidden")
+		.attr("height",20)
+		.attr("width",0)
+		.attr("x",width_odds/1.5)
+		.attr("y",padding_odds);	
 
     //create line graph
 	var line = d3.svg.line()
@@ -753,13 +769,14 @@ individual nodes to see game details and stats.
 	svg.selectAll("image")
 		.data(leicester_data)
 		.on("click",function(d) { console.log("clicked");})
-		.on("mouseover", function(d) {            
-				div.transition()        
-            	    .duration(200)      
-            	    .style("opacity", .9);      
-            	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result + "<br/>" + "<b/>Shot Accuracy: </b/>" + d.ShotAccuracy + "<br/>" + "<b/>Possession: </b/>" + d.Possession + "<br/>" + "<b/>Pass Accuracy: </b/>" + d.PassAccuracy)  
-            	    .style("left", (d3.event.pageX) + "px")     
-            	    .style("top", (d3.event.pageY) + "px"); 
+		.on("mouseover", function(d) {      
+
+			div.transition()        
+        	    .duration(200)      
+        	    .style("opacity", .9);      
+        	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result + "<br/>" + "<b/>Shot Accuracy: </b/>" + d.ShotAccuracy + "<br/>" + "<b/>Possession: </b/>" + d.Possession + "<br/>" + "<b/>Pass Accuracy: </b/>" + d.PassAccuracy)  
+        	    .style("left", (d3.event.pageX) + "px")     
+        	    .style("top", (d3.event.pageY) + "px"); 
 
             })
 		.on("mouseout", function(d) {       
@@ -911,14 +928,13 @@ function processData (rows)
 function genGraph (teamdata)
 {
 	var svg = d3.select("#graph");
-	var width = svg.attr("width");
-	var height = svg.attr("height");
-	var padding = 60;
+	var width_compare = svg.attr("width");
+	var height_compare = svg.attr("height");
+	var padding_compare = 60;
 	//Clear svg
 	svg.selectAll("*").remove();
-	
-	svg.append("rect").attr("height",height-padding*2).attr("width",width)
-	.attr("x",padding).attr("y",padding).style("fill", "black").style("opacity",0);
+	svg.append("rect").attr("height",height_compare-padding_compare*2).attr("width",width_compare)
+	.attr("x",padding_compare).attr("y",padding_compare).style("fill", "black").style("opacity",0);
 	
 	//See which teams are selected for comparison
 	var teams = [];
@@ -1070,9 +1086,9 @@ function genGraph (teamdata)
 	
 	//Set Linear Scaling
 	var xScale = d3.scale.linear().domain([0, 32])
-	.range([padding, width]);
+	.range([padding_compare, width_compare]);
 	var yScale = d3.scale.linear().domain([0,max])
-	.range([height-padding, padding]);
+	.range([height_compare-padding_compare, padding_compare]);
 
 	//Generate Axes
 	var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
@@ -1085,27 +1101,27 @@ function genGraph (teamdata)
 				
 	//Axis Labels and Chart Title
 	if (document.getElementById("toggle").checked)
-	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
+	{	svg.append("text").attr("x",width_compare/2 + 30).attr("y",20)
 		.style("font-weight","normal").style("font-size",20)
 		.text("Cumulative " + d3.select("#metricsel").node().value + " over the Season");
 	
-		svg.append("text").attr("x",width/2 + 30).attr("y",40)
+		svg.append("text").attr("x",width_compare/2 + 30).attr("y",40)
 		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
 	else
-	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
+	{	svg.append("text").attr("x",width_compare/2 + 30).attr("y",20)
 		.style("font-weight","normal").style("font-size",20)
 		.text(d3.select("#metricsel").node().value + " per Game");
 		
-		svg.append("text").attr("x",width/2 + 30).attr("y",40)
+		svg.append("text").attr("x",width_compare/2 + 30).attr("y",40)
 		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
-	svg.append("text").attr("x",padding).attr("y",250)
+	svg.append("text").attr("x",padding_compare).attr("y",250)
 	.attr("transform", "translate (-240,300) rotate(-90)")
 	.style("font-weight","normal").text(d3.select("#metricsel").node().value); ;
-	svg.append("text").attr("y",yScale(0)+32).attr("x",width-20)
+	svg.append("text").attr("y",yScale(0)+32).attr("x",width_compare-20)
 	.style("font-weight", "normal").text("Week");
 
 	//Plot Points
@@ -1123,46 +1139,19 @@ function genGraph (teamdata)
 			var sel = svg.selectAll("circle[id='"+teamstats[t].team+"']");
 			sel.data(teamstats[t].games).enter();
 			sel.on("mouseover",function(){
-				var curr = d3.select(this);
-				var circposx = parseInt(curr.attr("cx")),circposy=parseInt(curr.attr("cy"));
-				curr.style("stroke","black").attr("stroke-width",2);
-				
-				if (circposx >= xScale(29))
-					circposx -= 70;
-				else if (circposx == xScale(0))
-					circposx += 20;
-				svg.append("rect").attr("class","popup").attr("x",circposx-70)
-				.attr("y",circposy-60);
-			
-				var inf = curr.data(); 
-				svg.append("text").attr("class","popup").attr("x",circposx-35)
-				.attr("y",circposy-50).style("font-weight","bold").text("Home Team: ");
-				
-				svg.append("text").attr("class","popup").attr("x",circposx+30)
-				.attr("y",circposy-50).text(inf[0].home);
-				
-				svg.append("text").attr("class","popup").attr("x",circposx-35)
-				.attr("y",circposy-40).style("font-weight","bold").text("Away Team: ");
-				
-				svg.append("text").attr("class","popup").attr("x",circposx+30)
-				.attr("y",circposy-40).text(inf[0].away);
-				
-				svg.append("text").attr("class","popup").attr("x",circposx-53)
-				.attr("y",circposy-30).style("font-weight","bold").text("Date: ");
-				
-				svg.append("text").attr("class","popup").attr("x",circposx+30)
-				.attr("y",circposy-30).text(inf[0].dat);
+					var curr = d3.select(this);
+					var inf = curr.data(); 
 
-				svg.append("text").attr("class","popup").attr("x",circposx-48)
-				.attr("y",circposy-20).style("font-weight","bold").text("Venue: ");
-				
-				svg.append("text").attr("class","popup").attr("x",circposx+20)
-				.attr("y",circposy-20).text(inf[0].ven);
+					div.transition()        
+	            	    .duration(200)      
+	            	    .style("opacity", 0.9);     
+            	    div.html("<b/>Date: </b/>" + inf[0].dat + "<br>" + "<b>Home: </b>" + inf[0].home + "<br>" + "<b>Away: </b>" + inf[0].away 
+            	    	+ "<br>" + "<b>Venue: </b>" + inf[0].ven)  
+	            	    .style("left", (d3.event.pageX) + "px")     
+	            	    .style("top", (d3.event.pageY) + "px");  
 				
 			})
-			.on("mouseout",function(){d3.select(this).style("stroke","none");
-			d3.selectAll("rect.popup").remove();
-			d3.selectAll("text.popup").remove();});
+			.on("mouseout",function(){div.transition().duration(500).style("opacity", 0);});
 	}
 
 	//Plot Paths
@@ -1194,9 +1183,9 @@ function genGraph (teamdata)
 		legend.append("text").attr("x",52).attr("y", t*space+10)
 		.style("font-size", "11px").text(teamstats[t].team);
 	}
-	
 }
 
+	
 //Update Graph when a new metric/team is selected
 d3.selectAll("#metricsel").on("change", function(){genGraph(data)});
 d3.selectAll("input").on("change", function(){genGraph(data)});
