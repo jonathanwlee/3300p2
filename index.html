@@ -43,27 +43,28 @@ The arrows signify movement in position from the previous season.
 	var startPos = 5; 
 	$( "#slider" ).slider({
 		value: 10,
-		min: 1,
+		min: 0,
 		max: 10,
 		step: 1
 	})
 	.each(function() {
 
-	var vals = 9;
+	var vals = 10;
 
 	// Space out values
 	for (var i = 0; i <= vals; i++) {
 		var label;
-		if (i==9) { label = "'15-'16";}
-		else if(i==8) { label ="'14-'15";}
-		else if(i==7) { label ="'13-'14";}
-		else if(i==6) { label ="'12-'13";}
-		else if(i==5) { label ="'11-'12";}
-		else if(i==4) { label ="'10-'11";}
-		else if(i==3) { label ="'09-'10";}
-		else if(i==2) { label ="'08-'09";}
-		else if(i==1) { label ="'07-'08";}
-		else if(i==0) { label ="'06-'07";}
+		if (i==10) { label = "'15-'16";}
+		else if(i==9) { label ="'14-'15";}
+		else if(i==8) { label ="'13-'14";}
+		else if(i==7) { label ="'12-'13";}
+		else if(i==6) { label ="'11-'12";}
+		else if(i==5) { label ="'10-'11";}
+		else if(i==4) { label ="'09-'10";}
+		else if(i==3) { label ="'08-'09";}
+		else if(i==2) { label ="'07-'08";}
+		else if(i==1) { label ="'06-'07";}
+		else if(i==0) { label ="'05-'06";}
 
 		var el = $('<label>' + label + '</label>').css('left',(i/vals*100)+'%');
 		$( "#slider" ).append(el);
@@ -84,6 +85,7 @@ The arrows signify movement in position from the previous season.
 	else if (endPos ==3 ) {last_season = season_07_08; update_season(season_08_09);}
 	else if (endPos ==2 ) {last_season = season_06_07; update_season(season_07_08);}
 	else if (endPos ==1 ) {last_season = season_05_06; update_season(season_06_07);}
+	else if (endPos == 0) {last_season = season_04_05; update_season(season_05_06);}
 
     }
 
@@ -108,7 +110,7 @@ var club_images_table, club_text_table;
 var points_bar_table,points_text_table,bar_table;
 var win_bar_table,draw_bar_table,loss_bar_table;
 var xScale_table = d3.scale.linear().domain([0,114]).range([padding_table+190,width_table]);
-var season_05_06,season_06_07,season_07_08,season_08_09,season_09_10,season_10_11,season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
+var season_04_05, season_05_06,season_06_07,season_07_08,season_08_09,season_09_10,season_10_11,season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
 var current_season = "season_15_16";
 var points_bars; 
 var yScale_table;
@@ -121,7 +123,8 @@ var table_bar_height = 18;
 var table_bar_adjustment = 10;
 
 
-//Initialize 05 - 16 season data in season variables; 
+//Initialize 04 - 16 season data in season variables; 
+d3.json("epl-04-05.json", function (error, data) {season_04_05 = data; });
 d3.json("epl-05-06.json", function (error, data) {season_05_06 = data; });
 d3.json("epl-06-07.json", function (error, data) {season_06_07 = data; });
 d3.json("epl-07-08.json", function (error, data) {season_07_08 = data; });
