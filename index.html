@@ -585,7 +585,7 @@ function update_season(season) {
 }
 </script>
 
-<h2>Defying the Odds</h2>
+<h2>Defying the Odds: A Game by Game Analysis</h2>
 <p class="p_text">
 Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Below is the
 historical betting odds for Leicester City to win the Premier League title. <br>
@@ -1131,8 +1131,8 @@ function genGraph (teamdata)
 					div.transition()        
 	            	    .duration(200)      
 	            	    .style("opacity", 0.9);     
-            	    div.html("<b/>Result: </b/>" + inf[0].res + "<br>" +"<b/>Date: </b/>" + inf[0].dat + "<br>" + "<b>Home: </b>" 
-					+ inf[0].home + "<br>" + "<b>Away: </b>" + inf[0].away + "<br>" + "<b>Venue: </b>" + inf[0].ven)  
+            	    div.html("<b/>Date: </b/>" + inf[0].dat + "<br>" + "<b>Home: </b>" 
+					+ inf[0].home + "<br>" + "<b>Away: </b>" + inf[0].away + "<br>" + "<b>Venue: </b>" + inf[0].ven +"<br>" + "<b/>Result: </b/>" + inf[0].res)  
 	            	    .style("left", (d3.event.pageX) + "px")     
 	            	    .style("top", (d3.event.pageY) + "px");  
 				
