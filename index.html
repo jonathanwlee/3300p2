@@ -1205,6 +1205,8 @@ function genGraph (teamdata)
 					circposx -= 70;
 				else if (circposx == xScale(0))
 					circposx += 20;
+				if (circposy == yScale(max))
+					circposy += 10;
 				svg.append("rect").attr("class","popup").attr("x",circposx-70)
 				.attr("y",circposy-70);
 			
