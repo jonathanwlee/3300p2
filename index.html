@@ -4,10 +4,8 @@
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="leicesterstats.json.js"></script>
-
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -18,6 +16,7 @@
 <p class="p_text">With four weeks left to the English Premier League season, Leicester City are in the prime position to be crowned as champions with a five point lead ahead
 of second place Tottenham. After just one season, Leicester City has carried itself from fighting relegation to the lower leagues of English Football to becoming
 a powerhouse topping the table. </p>
+
 <p class="p_quote">"It could quite possibly be the greatest sporting upset of all time if Leicester won the Premier League from where they were a year ago." - Garry Lineker
 </p>
 
@@ -26,20 +25,17 @@ a powerhouse topping the table. </p>
 <p class="p_text">
 The Premier League is the top division of English Football consisting of 20 teams. At the conclusion of every season, the lowest three teams are relegated to a lower division, while three teams from the Championship, the division just below, are promoted to the EPL. 
 
-Add text visualization here. 
-
-
 <br><br>Here, are the standings for the last ten seasons of the English Premier League. In the Premier League, a win awards three points, a draw one, and a loss zero points.
 After 38 weeks of gameplay, the team with the highest points is crowned the champion. Ties are broken by goal differential, the number of goals scored minus the number of goals conceded. Select seasons using the slider below. 
-<br><br>Hover over individual bars to see point breakdowns by wins and draws as well as possible final standings from losses converted to wins. Click to maintain the breakdown format or revert back to points. 
-The arrows signify movement in position from the previous season. 
+
+<br><br>Hover over individual bars to see point breakdowns by wins and draws as well as possible final standings from losses converted to wins. Click to maintain the breakdown format or revert back to points. The arrows signify movement in position from the previous season. 
 </p>
 
 <p>In the last <span class="span_emphasis">10</span> seasons, the champion has never placed worse than the <span class="span_emphasis">top 3</span> the previous season.</p>
 
-
 <div id="slider"></div>
 <script>
+	//Initialize Slider
 	var startPos = 5; 
 	$( "#slider" ).slider({
 		value: 10,
@@ -51,7 +47,7 @@ The arrows signify movement in position from the previous season.
 
 	var vals = 10;
 
-	// Space out values
+	// Assign slider values to seasons
 	for (var i = 0; i <= vals; i++) {
 		var label;
 		if (i==10) { label = "'15-'16";}
@@ -66,62 +62,65 @@ The arrows signify movement in position from the previous season.
 		else if(i==1) { label ="'06-'07";}
 		else if(i==0) { label ="'05-'06";}
 
+		//Space out labels
 		var el = $('<label>' + label + '</label>').css('left',(i/vals*100)+'%');
 		$( "#slider" ).append(el);
 	 }
 	});
 
+  //Slider on slide stop
   $("#slider").on("slidestop", function(event, ui) {
     endPos = ui.value;
     if (startPos != endPos) {
-
-	if (endPos ==10 ) {last_season = season_14_15; update_season(season_15_16);}
-	else if (endPos == 9) { last_season = season_13_14; update_season(season_14_15);}
-	else if (endPos ==8 ) {last_season = season_12_13; update_season(season_13_14);}
-	else if (endPos ==7 ) {last_season = season_11_12; update_season(season_12_13);}
-	else if (endPos ==6 ) {last_season = season_10_11; update_season(season_11_12);}
-	else if (endPos ==5 ) {last_season = season_09_10; update_season(season_10_11);}
-	else if (endPos ==4 ) {last_season = season_08_09; update_season(season_09_10);}
-	else if (endPos ==3 ) {last_season = season_07_08; update_season(season_08_09);}
-	else if (endPos ==2 ) {last_season = season_06_07; update_season(season_07_08);}
-	else if (endPos ==1 ) {last_season = season_05_06; update_season(season_06_07);}
-	else if (endPos == 0) {last_season = season_04_05; update_season(season_05_06);}
-
+    	//Update season depending on which slider value is selected
+		if (endPos ==10 ) {last_season = season_14_15; update_season(season_15_16);}
+		else if (endPos == 9) { last_season = season_13_14; update_season(season_14_15);}
+		else if (endPos ==8 ) {last_season = season_12_13; update_season(season_13_14);}
+		else if (endPos ==7 ) {last_season = season_11_12; update_season(season_12_13);}
+		else if (endPos ==6 ) {last_season = season_10_11; update_season(season_11_12);}
+		else if (endPos ==5 ) {last_season = season_09_10; update_season(season_10_11);}
+		else if (endPos ==4 ) {last_season = season_08_09; update_season(season_09_10);}
+		else if (endPos ==3 ) {last_season = season_07_08; update_season(season_08_09);}
+		else if (endPos ==2 ) {last_season = season_06_07; update_season(season_07_08);}
+		else if (endPos ==1 ) {last_season = season_05_06; update_season(season_06_07);}
+		else if (endPos == 0) {last_season = season_04_05; update_season(season_05_06);}
     }
 
     startPos = endPos;
 });
-
 </script>
 
 <div id="table"></div>
+
 <p class="p_citation">* '15-'16 season is as of 4/26/2016 <br>Source: https://github.com/jokecamp/FootballData </p>
 
-
 <script>
-var height_table = 600;
-var width_table = 1100;
-var padding_table = 30;
-
-var svg_table = d3.select("#table").append("svg").attr("height", height_table).attr("width", width_table);
-var table; 
-var circles_table,circles_text_table;
-var club_images_table, club_text_table;
-var points_bar_table,points_text_table,bar_table;
-var win_bar_table,draw_bar_table,loss_bar_table;
-var xScale_table = d3.scale.linear().domain([0,114]).range([padding_table+190,width_table]);
+//Season Variables
 var season_04_05, season_05_06,season_06_07,season_07_08,season_08_09,season_09_10,season_10_11,season_12_13,season_11_12,season_13_14,season_14_15,season_15_16;
 var current_season = "season_15_16";
-var points_bars; 
-var yScale_table;
 var last_season; 
-var arrow_table; 
 var clicked_array = [];
 
 //Alignment and Sizing Variables
 var table_bar_height = 18;
 var table_bar_adjustment = 10;
+var height_table = 600;
+var width_table = 1100;
+var padding_table = 30;
 
+//SVG Elements
+var table;
+var svg_table = d3.select("#table").append("svg").attr("height", height_table).attr("width", width_table);
+var circles_table,circles_text_table;
+var club_images_table, club_text_table;
+var points_bar_table,points_text_table,bar_table;
+var win_bar_table,draw_bar_table,loss_bar_table;
+var points_bars; 
+var arrow_table; 
+
+//Scale
+var xScale_table = d3.scale.linear().domain([0,114]).range([padding_table+190,width_table]);
+var yScale_table;
 
 //Initialize 04 - 16 season data in season variables; 
 d3.json("epl-04-05.json", function (error, data) {season_04_05 = data; });
@@ -138,9 +137,7 @@ d3.json("epl-14-15.json", function (error, data) {season_14_15 = data; });
 
 d3.json("epl-15-16.json", function (error, data) {
 //Initialize array for monitoring click events
-for (p=0;p<20;p++) { 
-	clicked_array[p] = 0;
-}
+for (p=0;p<20;p++) { clicked_array[p] = 0;}
 
 //Initialize last season to 14_15; 
 last_season = season_14_15;
@@ -304,20 +301,16 @@ bar_table.enter().append("rect")
 	if (clicked_array[i] ==0) { 
 		d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
 		d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
-
 		d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
 		d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
-
 		d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
 		d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
-
 		d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
 		d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
-
 		d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
 		d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
 	}	
-	});
+});
 
 points_bar_table = svg_table.selectAll(".points_bar_table").data(season_15_16);
 points_bar_table.enter().append("rect")
@@ -330,7 +323,7 @@ points_bar_table.enter().append("rect")
 	.attr("x",function(d) {return xScale_table(0);})
 	.attr("y",function(d) { 	
 	return yScale_table(d.rank)-table_bar_adjustment;
-	});
+});
 
 //Adds Win, Draw, and Loss text
 win_text_table = svg_table.selectAll("win_text_table").data(season_15_16);
@@ -343,7 +336,7 @@ win_text_table.enter().append("text")
 	.attr("visibility","hidden")
 	.text(function(d) {
 	return d.wins + " wins"; 
-	});	
+});	
 
 draw_text_table = svg_table.selectAll("draw_text_table").data(season_15_16);
 draw_text_table.enter().append("text")
@@ -355,7 +348,7 @@ draw_text_table.enter().append("text")
 	.attr("visibility","hidden")
 	.text(function(d) {
 	return d.draws + " draws"; 
-	});	
+});	
 
 loss_text_table = svg_table.selectAll("loss_text_table").data(season_15_16);
 loss_text_table.enter().append("text")
@@ -367,7 +360,7 @@ loss_text_table.enter().append("text")
 	.attr("dy",".30em")
 	.text(function(d) {
 	return d.losses + " losses"; 
-	});	
+});	
 
 //Adds arrows up / down / no movement based off previous seasons position. 
 arrow_table = svg_table.selectAll(".arrow_table_up.arrow_table_down.arrow_table_neutral").data(season_15_16);
@@ -390,10 +383,10 @@ arrow_table.enter().append("text")
 	.attr("dy",".15em")
 	.attr("visibility","hidden")
 	.text(function(d,i) { 
-			var result = lastSeason(d,i);
-			return result[0];
-		});
+		var result = lastSeason(d,i);
+		return result[0];
 	});
+});
 
 /*
 Finds the difference between current season and last season. 
@@ -431,9 +424,7 @@ Updates season data based off selected season on slider. Makes appropriate chang
 */
 function update_season(season) {	
 	//Reset Clicked Array for use in click events
-	for (p=0;p<20;p++) { 
-		clicked_array[p] = 0;
-	}
+	for (p=0;p<20;p++) { clicked_array[p] = 0;}
 
 	//Update arrow text. 
 	svg_table.selectAll(".arrow").data(season)
@@ -512,9 +503,7 @@ function update_season(season) {
 		.attr("pointer-events","none")
 		.attr("x",padding_table + 190 )
 		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
+		.attr("width", function(d) { return 0;})
 		.attr("height",table_bar_height);
 
 	svg_table.selectAll(".draw").data(season)
@@ -522,9 +511,7 @@ function update_season(season) {
 		.attr("pointer-events","none")
 		.attr("x",function(d) { return xScale_table(d.wins*3);})
 		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
+		.attr("width", function(d) { return 0;})
 		.attr("height",table_bar_height);
 
 	svg_table.selectAll(".loss").data(season)
@@ -532,9 +519,7 @@ function update_season(season) {
 		.attr("pointer-events","none")
 		.attr("x",function(d) { return xScale_table(d.wins*3 + d.draws)})
 		.attr("y",function(d) {return yScale_table(d.rank)-table_bar_adjustment;})
-		.attr("width", function(d) { 
-			return 0;
-		})
+		.attr("width", function(d) { return 0;})
 		.attr("height",table_bar_height);
 
 	//Add invisible bar to handle click events 
@@ -568,16 +553,12 @@ function update_season(season) {
 		else { 
 			d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
 			d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
-
 			d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
 			d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
-
 			d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
 			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
-
 			d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
 			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
-
 			d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
 			clicked_array[i] =0;
 
@@ -607,16 +588,12 @@ function update_season(season) {
 		if (clicked_array[i] ==0) { 
 			d3.select(".wins_" + i).transition().duration(350).delay(100).attr("width",function() {return 0;});
 			d3.select(".wins_text_" + i ).transition().delay(350).attr("visibility","hidden");
-
 			d3.select(".draws_" + i ).transition().duration(250).delay(100).attr("width",function() {return 0;});
 			d3.select(".draws_text_" + i ).transition().delay(300).attr("visibility","hidden");			
-
 			d3.select(".losses_" + i ).transition().duration(250).delay(0).attr("width",function() {return 0;});
 			d3.select(".losses_text_" + i ).transition().delay(250).attr("visibility","hidden");	
-
 			d3.select(".points_" + i ).transition().duration(250).delay(400).attr("width",xScale_table(d.points) - xScale_table(0));
 			d3.selectAll(".points_text_table_" + i ).transition().delay(600).attr("visibility","visible");		
-
 			d3.select(".arrow_table_" + i ).transition().delay(250).attr("visibility","hidden");	
 
 			d3.select(".bar_table_" + i).attr("width",function() {return xScale_table(d.points)-xScale_table(0);} );
@@ -673,13 +650,14 @@ individual nodes to see game details and stats.
 				.append("svg")
 				.attr("width", width_odds)
 				.attr("height", height_odds);
-	
+
+	//Initialize dataset
 	var dataset = [];
 	for (var i = 0; i < leicester_data.length; i++) {
 		dataset.push([leicester_data[i].Week,leicester_data[i].Odds,leicester_data[i].Image]);
 	}
 
-	//create graph
+	//Generate graph
 	var xScale = d3.scale.linear()
 		.domain([0,d3.max(dataset,function(d) {return d[0];})])
 		.range([padding_odds, width_odds - padding_odds]);
@@ -750,31 +728,33 @@ individual nodes to see game details and stats.
     	.style("opacity", 0);
 	svg_odds.selectAll("image")
 		.data(leicester_data)
+		//On click. Update Possession and Pass Accuracy SVG 
 		.on("click",function(d) {
 			svg_game_stats.select(".leicester_bar_possession").transition().attr("width",xScale_Stats(d.Possession));
 			svg_game_stats.select(".leicester_bar_pass").transition().attr("width",xScale_Stats(d.PassAccuracy));
 			svg_game_stats.select(".game_stats_match").text("Match: " + d.Match);
 
-			svg_game_stats.select(".label_leicester_possession").transition().delay(250).text(d.Possession + "%").attr("x",xScale_Stats(d.Possession) + padding_stats - 22);
-			svg_game_stats.select(".label_leicester_pass").transition().delay(250).text(d.PassAccuracy + "%").attr("x",xScale_Stats(d.PassAccuracy) + padding_stats - 22);
-
+			svg_game_stats.select(".label_leicester_possession").transition().text(d.Possession + "%").attr("x",xScale_Stats(d.Possession) + padding_stats - 24);
+			svg_game_stats.select(".label_leicester_pass").transition().text(d.PassAccuracy + "%").attr("x",xScale_Stats(d.PassAccuracy) + padding_stats - 24);
 		})
+		//On Mouse over, display relevent data
 		.on("mouseover", function(d) {      
-
 			div.transition()        
         	    .duration(200)      
         	    .style("opacity", .9);      
-        	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result + "<br/>" + "<b/>Shot Accuracy: </b/>" + d.ShotAccuracy)  
+        	div.html("<b/>Date: </b/>" + d.Date + "<br/>" + "<b/>Odds: </b/>" + d.Odds + "<br/>" + "<b/>Match: </b/>" + d.Match + "<br/>" + "<b/>Result: </b/>" + d.Result)
         	    .style("left", (d3.event.pageX) + "px")     
         	    .style("top", (d3.event.pageY) + "px"); 
-
             })
+		//On Mouseout, hide. 
 		.on("mouseout", function(d) {       
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);
         });	
+
 </script>
+
 <div id ="game_stats"></div>
 
 <script>
@@ -784,6 +764,7 @@ var svg_game_stats = d3.select("#game_stats").append("svg").attr("width",width_o
 
 var xScale_Stats = d3.scale.linear().domain([0,100]).range([padding_stats,width_odds-padding_stats]);
 
+//Append SVG elements that will be updated in the Odds SVG
 svg_game_stats.append("rect")
 	.attr("class","champions_bar_pass")
 	.attr("visibility","visible")
@@ -816,6 +797,7 @@ svg_game_stats.append("rect")
 	.attr("x",padding_stats)
 	.attr("y",95);
 
+//Labels
 svg_game_stats.append("text")
 	.attr("x",padding_stats)
 	.attr("y",88)
@@ -832,7 +814,7 @@ svg_game_stats.append("text")
 	.attr("y",15)
 	.text("Match: ");
 
-//Text Elements for Bars
+//Text Elements for Bars (Leicester)
 svg_game_stats.append("text")
 	.attr("class","label_leicester_possession")
 	.attr("x",padding_stats)
@@ -843,20 +825,18 @@ svg_game_stats.append("text")
 	.attr("x",padding_stats)
 	.attr("y",45+14)
 
-//Text Elements for Bars
+//Text Elements for Bars (Champions)
 svg_game_stats.append("text")
 	.attr("class","label_champions_possession")
-	.attr("x",xScale_Stats(58.17) + padding_stats - 24)
+	.attr("x",xScale_Stats(58) + padding_stats - 24)
 	.attr("y",95+14)
 	.text("58%");
 
 svg_game_stats.append("text")
 	.attr("class","label_champions_pass")
-	.attr("x",xScale_Stats(82.99) + padding_stats - 24)
+	.attr("x",xScale_Stats(83) + padding_stats - 24)
 	.attr("y",45+14)
 	.text("83%");
-
-
 </script>
 
 <p class="p_citation">Source: Sky BET Premier League Betting Odds (https://www.skybet.com/football/premier-league)<br>
@@ -911,7 +891,7 @@ data just might not tell the whole story.
 	</form>
 	</div>
 	<div class="chart">
-		<svg id="graph" width="1100" height="500"></svg>
+		<svg id="compare" width="1100" height="500"></svg>
 	</div>
 	<p class="cite">*Data as of 3/20/2016 <br>Source: https://github.com/jargnar/premier-league-data/ </p>
 	<div class="legend" id="leg"></div>
@@ -1001,13 +981,14 @@ function processData (rows)
 //Generate Graph
 function genGraph (teamdata)
 {
-	var svg = d3.select("#graph");
-	var width_compare = svg.attr("width");
-	var height_compare = svg.attr("height");
+	var svg_compare = d3.select("#compare");
+	var width_compare = svg_compare.attr("width");
+	var height_compare = svg_compare.attr("height");
 	var padding_compare = 60;
+
 	//Clear svg
-	svg.selectAll("*").remove();
-	svg.append("rect").attr("height",height_compare-padding_compare*2).attr("width",width_compare)
+	svg_compare.selectAll("*").remove();
+	svg_compare.append("rect").attr("height",height_compare-padding_compare*2).attr("width",width_compare)
 	.attr("x",padding_compare).attr("y",padding_compare).style("fill", "black").style("opacity",0);
 	
 	//See which teams are selected for comparison
@@ -1159,43 +1140,43 @@ function genGraph (teamdata)
 	if (tmp>max) max=tmp;});
 	
 	//Set Linear Scaling
-	var xScale = d3.scale.linear().domain([0, 32])
+	var xScale_compare = d3.scale.linear().domain([0, 32])
 	.range([padding_compare, width_compare]);
-	var yScale = d3.scale.linear().domain([0,max])
+	var yScale_compare = d3.scale.linear().domain([0,max])
 	.range([height_compare-padding_compare, padding_compare]);
 
 	//Generate Axes
-	var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-	var yAxis = d3.svg.axis().scale(yScale).orient("left").tickFormat(d3.format("d"));
-	svg.append("g").attr("class", "axis").attr("transform","translate(0,"+yScale(0)+")")
-	.call(xAxis);
-	svg.append("g").attr("class", "axis").attr("transform","translate(60,0)")
-	.call(yAxis);
+	var xAxis_compare = d3.svg.axis().scale(xScale_compare).orient("bottom");
+	var yAxis_compare = d3.svg.axis().scale(yScale_compare).orient("left").tickFormat(d3.format("d"));
+	svg_compare.append("g").attr("class", "axis").attr("transform","translate(0,"+yScale_compare(0)+")")
+	.call(xAxis_compare);
+	svg_compare.append("g").attr("class", "axis").attr("transform","translate(60,0)")
+	.call(yAxis_compare);
 
 				
 	//Axis Labels and Chart Title
 	if (document.getElementById("toggle").checked)
-	{	svg.append("text").attr("x",width_compare/2 + 30).attr("y",20)
+	{	svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",20)
 		.style("font-weight","normal").style("font-size",20)
 		.text("Cumulative " + d3.select("#metricsel").node().value + " over the Season");
 	
-		svg.append("text").attr("x",width_compare/2 + 30).attr("y",40)
+		svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",40)
 		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
 	else
-	{	svg.append("text").attr("x",width_compare/2 + 30).attr("y",20)
+	{	svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",20)
 		.style("font-weight","normal").style("font-size",20)
 		.text(d3.select("#metricsel").node().value + " per Game");
 		
-		svg.append("text").attr("x",width_compare/2 + 30).attr("y",40)
+		svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",40)
 		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
-	svg.append("text").attr("x",padding_compare).attr("y",250)
+	svg_compare.append("text").attr("x",padding_compare).attr("y",250)
 	.attr("transform", "translate (-240,300) rotate(-90)")
 	.style("font-weight","normal").text(d3.select("#metricsel").node().value); ;
-	svg.append("text").attr("y",yScale(0)+32).attr("x",width_compare-20)
+	svg_compare.append("text").attr("y",yScale_compare(0)+32).attr("x",width_compare-20)
 	.style("font-weight", "normal").text("Week");
 
 	//Plot Points
@@ -1204,13 +1185,13 @@ function genGraph (teamdata)
 	{
 		for (var i=0; i < teamstats[t].data.length; i++)
 		{
-			svg.append("circle").attr("id",teamstats[t].team)
-			.attr("cx", xScale(i+1)).attr("cy", yScale(teamstats[t].data[i]))
+			svg_compare.append("circle").attr("id",teamstats[t].team)
+			.attr("cx", xScale_compare(i+1)).attr("cy", yScale_compare(teamstats[t].data[i]))
 			.attr("r", 6).style("fill", color(t));
 		}
 		
 		//Display game details when hovering
-			var sel = svg.selectAll("circle[id='"+teamstats[t].team+"']");
+			var sel = svg_compare.selectAll("circle[id='"+teamstats[t].team+"']");
 			sel.data(teamstats[t].games).enter();
 			sel.on("mouseover",function(){
 					var curr = d3.select(this);
@@ -1231,13 +1212,13 @@ function genGraph (teamdata)
 	//Plot Paths
 	var week;
 	var plotline = d3.svg.line()
-	.x(function (d){week++; return xScale(week+1)})
-	.y(function (d) {return yScale(d)});
+	.x(function (d){week++; return xScale_compare(week+1)})
+	.y(function (d) {return yScale_compare(d)});
 	
 	for (var t=0; t < teamstats.length; t++)
 	{
 		week = -1;
-		svg.append("path").attr("d", plotline(teamstats[t].data))
+		svg_compare.append("path").attr("d", plotline(teamstats[t].data))
 		.attr("class","plot").attr("stroke", color(t));
 	}
 	

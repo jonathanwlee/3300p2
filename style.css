@@ -1,4 +1,30 @@
+/* Global */
 body {font-family:"Open Sans"; padding-left:15px;}
+.p_text { width: 50%; font-size:12px;}
+.p_quote {width:50%; font-size:14px; font-style: italic; color:gray;}
+.p_citation { font-size:10px; margin-top: 0px;}
+
+/*Table Styles*/
+#slider label {
+	position: absolute;
+	width: 40px;
+	font-size:10px;
+	margin-left: -15px;
+	text-align: center;
+	margin-top: 20px;
+}
+
+#slider {
+	width: 70%;
+	margin: 2em auto;
+}
+
+#seasonYears { 
+	width: 70%;
+	margin:0 auto;
+	padding:0;
+}
+
 .circles_text_table { font-size: 10px; fill:white; text-anchor:middle; alignment-baseline:auto;}
 
 .span_emphasis {
@@ -36,28 +62,7 @@ body {font-family:"Open Sans"; padding-left:15px;}
 	stroke-width:2;
 }	
 
-#slider label {
-	position: absolute;
-	width: 40px;
-	font-size:10px;
-	margin-left: -15px;
-	text-align: center;
-	margin-top: 20px;
-}
-
-/* below is not necessary, just for style */
-#slider {
-	width: 70%;
-	margin: 2em auto;
-}
-
-#seasonYears { 
-	width: 70%;
-	margin:0 auto;
-	padding:0;
-}
-
-/* Vis2*/
+/* Odds SVG Styles*/
 line {stroke:black}
 .container text {text-anchor: middle; alignment-baseline:middle;}
 text.popup {font-size: 10; font-family: Arial}
@@ -66,7 +71,7 @@ text.popup {font-size: 10; font-family: Arial}
 .axis text {font-size:.75em; fill:black}
 path.plot {fill:none; stroke-width:2}
 rect.popup {width: 170; height: 50; rx: 6; ry: 6; fill: lightBlue}
-
+.odds_image { cursor:pointer;}
 div.container {position: relative; width: 1700px;}
 div.chart {position: absolute; top: -20px; left: 0px;}
 div.in {position: absolute; right: 265px; font-size:12px; top: -80px}
@@ -85,11 +90,6 @@ select {
     appearance: none;
 }
 
-.p_text { width: 50%; font-size:12px;}
-.p_quote {width:50%; font-size:14px; font-style: italic; color:gray;}
-.p_citation { font-size:10px; margin-top: 0px;}
-
-/*Vis3*/
 .label {
 		font-family: sans-serif;
 		font-size: 12px;
@@ -111,9 +111,9 @@ div.tooltip {
 		z-index: 300;
 }
 
-.odds_image { 
-cursor:pointer;
-}
+/*Possession and Pass accuracy SVG Styles*/
 .leicester_bar_possession,.leicester_bar_pass{ fill:#638bc4;}
 .champions_bar_possession,.champions_bar_pass{fill:#215aac;}
 .label_leicester_possession,.label_leicester_pass,.label_champions_possession,.label_champions_pass {fill:white; font-size:10px; text-anchor:middle;}
+
+
