@@ -932,6 +932,7 @@ function processData (rows)
 		//Get game details
 		var date = rows[i].date;
 		var venue = rows[i].venue;
+		var result = hg+"-"+ag;
 		
 		var a = teamdata.findIndex(function (d){return d.team == away});
 		var h = teamdata.findIndex(function (d){return d.team == home});
@@ -940,7 +941,7 @@ function processData (rows)
 		{
 			var stats = {team:away, shots:[as],corner:[acn],cross:[acr],
 			goals:[ag],pens:[ap],saves:[asv], home:[home], away:[away],date:[date],
-			venue:[venue], goalc:[hg]};
+			venue:[venue], goalc:[hg],result:[result]};
 			teamdata.unshift(stats);
 		}
 		else
@@ -956,13 +957,14 @@ function processData (rows)
 			teamdata[a].date.unshift(date);
 			teamdata[a].venue.unshift(venue);
 			teamdata[a].goalc.unshift(hg);
+			teamdata[a].result.unshift(result);
 		}
 		
 		if (h == -1)
 		{
 			var stats = {team:home, shots:[hs],corner:[hcn],cross:[hcr],
 			goals:[hg],pens:[hp],saves:[hsv], home:[home], away:[away], date:[date],
-			venue:[venue], goalc:[ag]};
+			venue:[venue], goalc:[ag],result:[result]};
 			teamdata.unshift(stats);
 		}
 		else
@@ -978,6 +980,7 @@ function processData (rows)
 			teamdata[h].date.unshift(date);
 			teamdata[h].venue.unshift(venue);		
 			teamdata[h].goalc.unshift(ag);
+			teamdata[h].result.unshift(result);
 		}	
 	}
 	return teamdata;
@@ -986,15 +989,15 @@ function processData (rows)
 //Generate Graph
 function genGraph (teamdata)
 {
-	var svg_compare = d3.select("#compare");
-	var width_compare = svg_compare.attr("width");
-	var height_compare = svg_compare.attr("height");
-	var padding_compare = 60;
-
+	var svg = d3.select("#graph");
+	var width = svg.attr("width");
+	var height = svg.attr("height");
+	var padding = 60;
 	//Clear svg
-	svg_compare.selectAll("*").remove();
-	svg_compare.append("rect").attr("height",height_compare-padding_compare*2).attr("width",width_compare)
-	.attr("x",padding_compare).attr("y",padding_compare).style("fill", "black").style("opacity",0);
+	svg.selectAll("*").remove();
+	
+	svg.append("rect").attr("height",height-padding*2).attr("width",width)
+	.attr("x",padding).attr("y",padding).style("fill", "black").style("opacity",0);
 	
 	//See which teams are selected for comparison
 	var teams = [];
@@ -1020,7 +1023,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].shots.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].shots.slice()
 					,games:gamedets});
@@ -1037,7 +1040,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].corner.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].corner.slice()
 					,games:gamedets});
@@ -1053,7 +1056,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].cross.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].cross.slice()
 					,games:gamedets});
@@ -1069,7 +1072,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].goals.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].goals.slice()
 					,games:gamedets});
@@ -1085,7 +1088,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].pens.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].pens.slice()
 					,games:gamedets});
@@ -1101,7 +1104,7 @@ function genGraph (teamdata)
 						for (var t=0;t<teamdata[i].saves.length;t++)
 						{
 							gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 						}
 						teamstats.push({team:teamdata[i].team,data:teamdata[i].saves.slice()
 						,games:gamedets});
@@ -1117,7 +1120,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].goalc.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].goalc.slice()
 					,games:gamedets});
@@ -1145,43 +1148,43 @@ function genGraph (teamdata)
 	if (tmp>max) max=tmp;});
 	
 	//Set Linear Scaling
-	var xScale_compare = d3.scale.linear().domain([0, 32])
-	.range([padding_compare, width_compare]);
-	var yScale_compare = d3.scale.linear().domain([0,max])
-	.range([height_compare-padding_compare, padding_compare]);
+	var xScale = d3.scale.linear().domain([0, 32])
+	.range([padding, width]);
+	var yScale = d3.scale.linear().domain([0,max])
+	.range([height-padding, padding]);
 
 	//Generate Axes
-	var xAxis_compare = d3.svg.axis().scale(xScale_compare).orient("bottom");
-	var yAxis_compare = d3.svg.axis().scale(yScale_compare).orient("left").tickFormat(d3.format("d"));
-	svg_compare.append("g").attr("class", "axis").attr("transform","translate(0,"+yScale_compare(0)+")")
-	.call(xAxis_compare);
-	svg_compare.append("g").attr("class", "axis").attr("transform","translate(60,0)")
-	.call(yAxis_compare);
+	var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+	var yAxis = d3.svg.axis().scale(yScale).orient("left").tickFormat(d3.format("d"));
+	svg.append("g").attr("class", "axis").attr("transform","translate(0,"+yScale(0)+")")
+	.call(xAxis);
+	svg.append("g").attr("class", "axis").attr("transform","translate(60,0)")
+	.call(yAxis);
 
 				
 	//Axis Labels and Chart Title
 	if (document.getElementById("toggle").checked)
-	{	svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",20)
+	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
 		.style("font-weight","normal").style("font-size",20)
 		.text("Cumulative " + d3.select("#metricsel").node().value + " over the Season");
 	
-		svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",40)
+		svg.append("text").attr("x",width/2 + 30).attr("y",40)
 		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
 	else
-	{	svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",20)
+	{	svg.append("text").attr("x",width/2 + 30).attr("y",20)
 		.style("font-weight","normal").style("font-size",20)
 		.text(d3.select("#metricsel").node().value + " per Game");
 		
-		svg_compare.append("text").attr("x",width_compare/2 + 30).attr("y",40)
+		svg.append("text").attr("x",width/2 + 30).attr("y",40)
 		.style("font-weight","normal").style("font-size",14)
 		.text("(Hover over points to see game details)");
 	}
-	svg_compare.append("text").attr("x",padding_compare).attr("y",250)
+	svg.append("text").attr("x",padding).attr("y",250)
 	.attr("transform", "translate (-240,300) rotate(-90)")
 	.style("font-weight","normal").text(d3.select("#metricsel").node().value); ;
-	svg_compare.append("text").attr("y",yScale_compare(0)+32).attr("x",width_compare-20)
+	svg.append("text").attr("y",yScale(0)+32).attr("x",width-20)
 	.style("font-weight", "normal").text("Week");
 
 	//Plot Points
@@ -1190,40 +1193,76 @@ function genGraph (teamdata)
 	{
 		for (var i=0; i < teamstats[t].data.length; i++)
 		{
-			svg_compare.append("circle").attr("id",teamstats[t].team)
-			.attr("cx", xScale_compare(i+1)).attr("cy", yScale_compare(teamstats[t].data[i]))
+			svg.append("circle").attr("id",teamstats[t].team)
+			.attr("cx", xScale(i+1)).attr("cy", yScale(teamstats[t].data[i]))
 			.attr("r", 6).style("fill", color(t));
 		}
 		
 		//Display game details when hovering
-			var sel = svg_compare.selectAll("circle[id='"+teamstats[t].team+"']");
+			var sel = svg.selectAll("circle[id='"+teamstats[t].team+"']");
 			sel.data(teamstats[t].games).enter();
 			sel.on("mouseover",function(){
-					var curr = d3.select(this);
-					var inf = curr.data(); 
+				var curr = d3.select(this);
+				var circposx = parseInt(curr.attr("cx")),circposy=parseInt(curr.attr("cy"));
+				curr.style("stroke","black").attr("stroke-width",2);
+				
+				if (circposx >= xScale(29))
+					circposx -= 70;
+				else if (circposx == xScale(0))
+					circposx += 20;
+				if (circposy == yScale(max))
+					circposy += 10;
+				svg.append("rect").attr("class","popup").attr("x",circposx-70)
+				.attr("y",circposy-70);
+			
+				var inf = curr.data();
 
-					div.transition()        
-	            	    .duration(200)      
-	            	    .style("opacity", 0.9);     
-            	    div.html("<b/>Date: </b/>" + inf[0].dat + "<br>" + "<b>Home: </b>" + inf[0].home + "<br>" + "<b>Away: </b>" + inf[0].away 
-            	    	+ "<br>" + "<b>Venue: </b>" + inf[0].ven)  
-	            	    .style("left", (d3.event.pageX) + "px")     
-	            	    .style("top", (d3.event.pageY) + "px");  
+				svg.append("text").attr("class","popup").attr("x",circposx-47)
+				.attr("y",circposy-60).style("font-weight","bold").text("Result: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+30)
+				.attr("y",circposy-60).text(inf[0].res);
+				
+				svg.append("text").attr("class","popup").attr("x",circposx-35)
+				.attr("y",circposy-50).style("font-weight","bold").text("Home Team: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+30)
+				.attr("y",circposy-50).text(inf[0].home);
+				
+				svg.append("text").attr("class","popup").attr("x",circposx-35)
+				.attr("y",circposy-40).style("font-weight","bold").text("Away Team: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+30)
+				.attr("y",circposy-40).text(inf[0].away);
+				
+				svg.append("text").attr("class","popup").attr("x",circposx-53)
+				.attr("y",circposy-30).style("font-weight","bold").text("Date: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+30)
+				.attr("y",circposy-30).text(inf[0].dat);
+
+				svg.append("text").attr("class","popup").attr("x",circposx-48)
+				.attr("y",circposy-20).style("font-weight","bold").text("Venue: ");
+				
+				svg.append("text").attr("class","popup").attr("x",circposx+20)
+				.attr("y",circposy-20).text(inf[0].ven);
 				
 			})
-			.on("mouseout",function(){div.transition().duration(500).style("opacity", 0);});
+			.on("mouseout",function(){d3.select(this).style("stroke","none");
+			d3.selectAll("rect.popup").remove();
+			d3.selectAll("text.popup").remove();});
 	}
 
 	//Plot Paths
 	var week;
 	var plotline = d3.svg.line()
-	.x(function (d){week++; return xScale_compare(week+1)})
-	.y(function (d) {return yScale_compare(d)});
+	.x(function (d){week++; return xScale(week+1)})
+	.y(function (d) {return yScale(d)});
 	
 	for (var t=0; t < teamstats.length; t++)
 	{
 		week = -1;
-		svg_compare.append("path").attr("d", plotline(teamstats[t].data))
+		svg.append("path").attr("d", plotline(teamstats[t].data))
 		.attr("class","plot").attr("stroke", color(t));
 	}
 	
@@ -1243,9 +1282,9 @@ function genGraph (teamdata)
 		legend.append("text").attr("x",52).attr("y", t*space+10)
 		.style("font-size", "11px").text(teamstats[t].team);
 	}
+	
 }
 
-	
 //Update Graph when a new metric/team is selected
 d3.selectAll("#metricsel").on("change", function(){genGraph(data)});
 d3.selectAll("input").on("change", function(){genGraph(data)});
