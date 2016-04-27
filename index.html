@@ -653,7 +653,6 @@ function update_season(season) {
 		return d.losses + " losses"; 
 		});	
 }
-
 </script>
 
 <h2>Defying the Odds</h2>
@@ -702,17 +701,19 @@ individual nodes to see game details and stats.
 		.attr("transform", "translate(" + padding + ",0)")
 		.call(yAxis);
 	svg.append("text")
-    	.attr("class", "label")
-    	.attr("text-anchor", "end")
-    	.attr("x", width/2)
-    	.attr("y", height - 5)
+    	.attr("x", width -padding)
+    	.attr("y",yScale(0) + 32)
     	.text("Week");
     svg.append("text")
-    	.attr("class", "label")
-    	.attr("x", 15)
-    	.attr("y", height/2)
-    	.text("Betting Odds")
-    	.attr("transform", "rotate(270 15,400)");
+    	.attr("x", 100)
+    	.attr("y", 200)
+    	.attr("transform", "translate (-240,300) rotate(-90)")
+    	.text("Betting Odds");
+
+    svg.append("text")
+    	.attr("x",100)
+    	.attr("y",250)
+		.attr("transform", "translate (-240,300) rotate(-90)").text("Betting Odds");
 
     //create line graph
 	var line = d3.svg.line()
@@ -722,6 +723,7 @@ individual nodes to see game details and stats.
 		.y(function(d){
 			return yScale(d[1]); 
 		})
+
 	svg.append("path")
       .datum(dataset)
       .attr("class", "line")
@@ -737,7 +739,8 @@ individual nodes to see game details and stats.
 			.attr("y", yScale(dataset[i][1])-10)
 			.attr("xlink:href", dataset[i][2])
 			.attr("height", "20px")
-			.attr("width", "20px");          
+			.attr("width", "20px")
+			.attr("class","odds_image");         
 	}
 
 	//create tooltips
@@ -760,11 +763,9 @@ individual nodes to see game details and stats.
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);
-        });
-	
-
-
+        });	
 </script>
+
 <p class="p_citation">Source: Sky BET Premier League Betting Odds (https://www.skybet.com/football/premier-league)</p>
 
 <h2>Searching for the Key</h2>

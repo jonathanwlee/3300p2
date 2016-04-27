@@ -8,7 +8,8 @@ var leicester_data = [
     "ShotAccuracy": 53,
     "Possession": 47,
     "PassAccuracy": 74,
-    "Image": "images/Sunderland.png"
+    "Image": "images/Sunderland.png",
+    "Position": 1
   },
   {
     "Week": 2,
@@ -19,7 +20,9 @@ var leicester_data = [
     "ShotAccuracy": 63,
     "Possession": 40,
     "PassAccuracy": 68,
-    "Image": "images/WestHamUnited.png"
+    "Image": "images/WestHamUnited.png",
+    "Position": 1
+
   },
   {
     "Week": 3,
@@ -30,7 +33,9 @@ var leicester_data = [
     "ShotAccuracy": 29,
     "Possession": 43,
     "PassAccuracy": 72,
-    "Image": "images/TottenhamHotspur.png"
+    "Image": "images/TottenhamHotspur.png",
+    "Position": 1
+
   },
   {
     "Week": 4,
@@ -41,7 +46,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 47,
     "PassAccuracy": 68,
-    "Image": "images/Bournemouth.png"
+    "Image": "images/Bournemouth.png",
+    "Position": 3
+
   },
   {
     "Week": 5,
@@ -52,7 +59,9 @@ var leicester_data = [
     "ShotAccuracy": 40,
     "Possession": 55,
     "PassAccuracy": 77,
-    "Image": "images/AstonVilla.png"
+    "Image": "images/AstonVilla.png",
+    "Position": 2
+
   },
   {
     "Week": 6,
@@ -63,7 +72,9 @@ var leicester_data = [
     "ShotAccuracy": 45,
     "Possession": 48,
     "PassAccuracy": 73,
-    "Image": "images/StokeCity.png"
+    "Image": "images/StokeCity.png",
+    "Position": 3
+
   },
   {
     "Week": 7,
@@ -74,7 +85,9 @@ var leicester_data = [
     "ShotAccuracy": 54,
     "Possession": 47,
     "PassAccuracy": 79,
-    "Image": "images/Arsenal.png"
+    "Image": "images/Arsenal.png",
+    "Position": 6
+
   },
   {
     "Week": 8,
@@ -85,7 +98,9 @@ var leicester_data = [
     "ShotAccuracy": 38,
     "Possession": 42,
     "PassAccuracy": 62,
-    "Image": "images/NorwichCity.png"
+    "Image": "images/NorwichCity.png",
+    "Position": 4
+
   },
   {
     "Week": 9,
@@ -96,7 +111,9 @@ var leicester_data = [
     "ShotAccuracy": 37,
     "Possession": 49,
     "PassAccuracy": 73,
-    "Image": "images/Southampton.png"
+    "Image": "images/Southampton.png",
+    "Position": 5
+
   },
   {
     "Week": 10,
@@ -107,7 +124,9 @@ var leicester_data = [
     "ShotAccuracy": 38,
     "Possession": 50,
     "PassAccuracy": 78,
-    "Image": "images/CrystalPalace.png"
+    "Image": "images/CrystalPalace.png",
+    "Position": 5
+
   },
   {
     "Week": 11,
@@ -118,7 +137,9 @@ var leicester_data = [
     "ShotAccuracy": 63,
     "Possession": 52,
     "PassAccuracy": 71,
-    "Image": "images/WestBromwichAlbion.png"
+    "Image": "images/WestBromwichAlbion.png",
+    "Position": 3
+
   },
   {
     "Week": 12,
@@ -129,7 +150,9 @@ var leicester_data = [
     "ShotAccuracy": 60,
     "Possession": 47,
     "PassAccuracy": 70,
-    "Image": "images/Watford.png"
+    "Image": "images/Watford.png",
+    "Position": 3
+
   },
   {
     "Week": 13,
@@ -140,7 +163,9 @@ var leicester_data = [
     "ShotAccuracy": 58,
     "Possession": 48,
     "PassAccuracy": 76,
-    "Image": "images/NewcastleUnited.png"
+    "Image": "images/NewcastleUnited.png",
+    "Position": 1
+
   },
   {
     "Week": 14,
@@ -151,7 +176,9 @@ var leicester_data = [
     "ShotAccuracy": 60,
     "Possession": 41,
     "PassAccuracy": 66,
-    "Image": "images/ManchesterUnited.png"
+    "Image": "images/ManchesterUnited.png",
+    "Position": 2
+
   },
   {
     "Week": 15,
@@ -162,7 +189,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 44,
     "PassAccuracy": 72,
-    "Image": "images/SwanseaCity.png"
+    "Image": "images/SwanseaCity.png",
+    "Position": 1
+
   },
   {
     "Week": 16,
@@ -173,7 +202,9 @@ var leicester_data = [
     "ShotAccuracy": 63,
     "Possession": 41,
     "PassAccuracy": 60,
-    "Image": "images/Chelsea.png"
+    "Image": "images/Chelsea.png",
+    "Position": 1
+
   },
   {
     "Week": 17,
@@ -184,7 +215,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 42,
     "PassAccuracy": 63,
-    "Image": "images/Everton.png"
+    "Image": "images/Everton.png",
+    "Position": 1
+
   },
   {
     "Week": 18,
@@ -195,7 +228,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 42,
     "PassAccuracy": 59,
-    "Image": "images/Liverpool.png"
+    "Image": "images/Liverpool.png",
+    "Position": 1
+
   },
   {
     "Week": 19,
@@ -206,7 +241,9 @@ var leicester_data = [
     "ShotAccuracy": 36,
     "Possession": 44,
     "PassAccuracy": 63,
-    "Image": "images/ManchesterCity.png"
+    "Image": "images/ManchesterCity.png",
+    "Position": 2
+
   },
   {
     "Week": 20,
@@ -217,7 +254,9 @@ var leicester_data = [
     "ShotAccuracy": 14,
     "Possession": 51,
     "PassAccuracy": 79,
-    "Image": "images/Bournemouth.png"
+    "Image": "images/Bournemouth.png",
+    "Position": 2
+
   },
   {
     "Week": 21,
@@ -228,7 +267,9 @@ var leicester_data = [
     "ShotAccuracy": 40,
     "Possession": 44,
     "PassAccuracy": 64,
-    "Image": "images/TottenhamHotspur.png"
+    "Image": "images/TottenhamHotspur.png",
+    "Position": 2
+
   },
   {
     "Week": 22,
@@ -239,7 +280,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 46,
     "PassAccuracy": 72,
-    "Image": "images/AstonVilla.png"
+    "Image": "images/AstonVilla.png",
+    "Position": 1
+
   },
   {
     "Week": 23,
@@ -250,7 +293,9 @@ var leicester_data = [
     "ShotAccuracy": 42,
     "Possession": 49,
     "PassAccuracy": 72,
-    "Image": "images/StokeCity.png"
+    "Image": "images/StokeCity.png",
+    "Position": 1
+
   },
   {
     "Week": 24,
@@ -261,7 +306,9 @@ var leicester_data = [
     "ShotAccuracy": 60,
     "Possession": 44,
     "PassAccuracy": 65,
-    "Image": "images/Liverpool.png"
+    "Image": "images/Liverpool.png",
+    "Position": 1
+
   },
   {
     "Week": 25,
@@ -272,7 +319,9 @@ var leicester_data = [
     "ShotAccuracy": 58,
     "Possession": 40,
     "PassAccuracy": 67,
-    "Image": "images/ManchesterCity.png"
+    "Image": "images/ManchesterCity.png",
+    "Position": 1
+
   },
   {
     "Week": 26,
@@ -283,7 +332,9 @@ var leicester_data = [
     "ShotAccuracy": 43,
     "Possession": 37,
     "PassAccuracy": 64,
-    "Image": "images/Arsenal.png"
+    "Image": "images/Arsenal.png",
+    "Position": 1
+
   },
   {
     "Week": 27,
@@ -294,7 +345,9 @@ var leicester_data = [
     "ShotAccuracy": 38,
     "Possession": 53,
     "PassAccuracy": 73,
-    "Image": "images/NorwichCity.png"
+    "Image": "images/NorwichCity.png",
+    "Position": 1
+
   },
   {
     "Week": 28,
@@ -305,7 +358,9 @@ var leicester_data = [
     "ShotAccuracy": 27,
     "Possession": 58,
     "PassAccuracy": 77,
-    "Image": "images/WestBromwichAlbion.png"
+    "Image": "images/WestBromwichAlbion.png",
+    "Position": 1
+
   },
   {
     "Week": 29,
@@ -316,7 +371,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 50,
     "PassAccuracy": 76,
-    "Image": "images/Watford.png"
+    "Image": "images/Watford.png",
+    "Position": 1
+
   },
   {
     "Week": 30,
@@ -327,7 +384,9 @@ var leicester_data = [
     "ShotAccuracy": 25,
     "Possession": 50,
     "PassAccuracy": 79,
-    "Image": "images/NewcastleUnited.png"
+    "Image": "images/NewcastleUnited.png",
+    "Position": 1
+
   },
   {
     "Week": 31,
@@ -338,7 +397,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 47,
     "PassAccuracy": 70,
-    "Image": "images/CrystalPalace.png"
+    "Image": "images/CrystalPalace.png",
+    "Position": 1
+
   },
   {
     "Week": 32,
@@ -349,7 +410,9 @@ var leicester_data = [
     "ShotAccuracy": 67,
     "Possession": 48,
     "PassAccuracy": 74,
-    "Image": "images/Southampton.png"
+    "Image": "images/Southampton.png",
+    "Position": 1
+
   },
   {
     "Week": 33,
@@ -360,7 +423,9 @@ var leicester_data = [
     "ShotAccuracy": 50,
     "Possession": 51,
     "PassAccuracy": 73,
-    "Image": "images/Sunderland.png"
+    "Image": "images/Sunderland.png",
+    "Position": 1
+
   },
   {
     "Week": 34,
@@ -371,7 +436,9 @@ var leicester_data = [
     "ShotAccuracy": 33,
     "Possession": 45,
     "PassAccuracy": 70,
-    "Image": "images/WestHamUnited.png"
+    "Image": "images/WestHamUnited.png",
+    "Position": 1
+
   },
 
     {
@@ -383,6 +450,8 @@ var leicester_data = [
     "ShotAccuracy": 60,
     "Possession": 44,
     "PassAccuracy": 74,
-    "Image": "images/SwanseaCity.png"
+    "Image": "images/SwanseaCity.png",
+    "Position": 1
+
   }
 ]
