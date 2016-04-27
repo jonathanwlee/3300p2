@@ -71,7 +71,7 @@ text.popup {font-size: 10; font-family: Arial}
 .axis line {stroke:black;}
 .axis text {font-size:.75em; fill:black}
 path.plot {fill:none; stroke-width:2}
-rect.popup {width: 170; height: 50; rx: 6; ry: 6; fill: lightBlue}
+rect.popup {width: 170; height: 60; rx: 6; ry: 6; fill: lightBlue}
 .odds_image { cursor:pointer;}
 div.container {position: relative; width: 1700px;}
 div.chart {position: absolute; top: -20px; left: 0px;}
