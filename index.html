@@ -25,10 +25,10 @@ a powerhouse topping the table. </p>
 <p class="p_text">
 The Premier League is the top division of English Football consisting of 20 teams. At the conclusion of every season, the lowest three teams are relegated to a lower division, while three teams from the Championship, the division just below, are promoted to the EPL. 
 
-<br><br>Here, are the standings for the last ten seasons of the English Premier League. In the Premier League, a win awards three points, a draw one, and a loss zero points.
-After 38 weeks of gameplay, the team with the highest points is crowned the champion. Ties are broken by goal differential, the number of goals scored minus the number of goals conceded. Select seasons using the slider below. 
+<br><br>Below are the standings for the last ten seasons of the English Premier League. In the league, a win awards three points, a draw one, and a loss zero points.
+After 38 weeks of gameplay, the team with the highest points is crowned the champion. Ties are broken by goal differential, the number of goals scored minus the number of goals conceded. 
 
-<br><br>Hover over individual bars to see point breakdowns by wins and draws as well as possible final standings from losses converted to wins. Click to maintain the breakdown format or revert back to points. The arrows signify movement in position from the previous season. 
+<br><br>Take a look at historical seasons and Premier League tables below. Hover over individual bars to see point breakdowns by wins and draws as well as possible final standings from losses converted to wins. Click to maintain the breakdown format or revert back to a points breakdown. The up/down/neutral arrows signify movement in position from the previous season. 
 </p>
 
 <p>In the last <span class="span_emphasis">10</span> seasons, the champion has never placed worse than the <span class="span_emphasis">top 3</span> the previous season.</p>
@@ -637,13 +637,22 @@ function update_season(season) {
 
 <h2>Defying the Odds</h2>
 <p class="p_text">
-Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Hover over
-individual nodes to see game details and stats. 
+Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Below is the
+historical betting odds for Leicester City to win the Premier League title. <br>
+<br>Hover over individual nodes to see game details and stats. Click on a particular node to see that Leicester City's pass accuracy (%) and possesion (%), a 
+traditionally key indicator of performance, in that particular game compared to the median pass accuracy and possession of the last ten title winners.  
 </p>
+
+<p>In the <span class="span_emphasis_lc">'15-'16</span> season, Leicester City has had an average pass accuracy of  <span class="span_emphasis_lc">70.6%</span> and possession of  <span class="span_emphasis_lc">46.5%</span> <br>
+
+Over the last <span class="span_emphasis">10</span> seasons, title winners had an average pass accuracy of  <span class="span_emphasis">83.0%</span> and possession of <span class="span_emphasis">57.9%</span> 
+</p>
+
+
 <div id="odds"></div>
 
 <script>
-	var width_odds = 1200;
+	var width_odds = 1100;
 	var height_odds = 450;
 	var padding_odds = 70;
 	var svg_odds = d3.select("#odds")
@@ -812,7 +821,7 @@ svg_game_stats.append("text")
 	.attr("class","game_stats_match")
 	.attr("x",padding_stats)
 	.attr("y",15)
-	.text("Match: ");
+	.text("Median of Past Ten Title Winners:  ");
 
 //Text Elements for Bars (Leicester)
 svg_game_stats.append("text")
@@ -839,7 +848,7 @@ svg_game_stats.append("text")
 	.text("83%");
 </script>
 
-<p class="p_citation">Source: Sky BET Premier League Betting Odds (https://www.skybet.com/football/premier-league)<br>
+<p class="p_citation">*Dark Blue percentages are of last ten year median % possession and % pass accuracy<br>Source: Sky BET Premier League Betting Odds (https://www.skybet.com/football/premier-league)<br>
 Source: http://www.bbc.com/sport/football/35553082</p>
 
 <h2>Searching for the Key</h2>
@@ -847,9 +856,6 @@ Source: http://www.bbc.com/sport/football/35553082</p>
 <p class="p_text">
 A fairy tale of a story, no one can seem to explain the sheer dominance and rise of Leicester City. Does taking a look at straight
 metrics help shine light on the club's incredible success? Take a look for yourself below. Hover over nodes for additional game details.
-<br>
-<br>Ultimately perhaps a combination of sheer determination, tactical genius, and a bit of luck have carried Leicester to a historic season. This season, 
-data just might not tell the whole story. 
 </p>
 <br><br>
 <div class="container">
@@ -896,7 +902,7 @@ data just might not tell the whole story.
 	<p class="cite">*Data as of 3/20/2016 <br>Source: https://github.com/jargnar/premier-league-data/ </p>
 	<div class="legend" id="leg"></div>
 </div>
-
+s
 <script>
 
 var data,test;
