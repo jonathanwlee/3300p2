@@ -861,6 +861,7 @@ function processData (rows)
 		//Get game details
 		var date = rows[i].date;
 		var venue = rows[i].venue;
+		var result = hg+"-"+ag;
 		
 		var a = teamdata.findIndex(function (d){return d.team == away});
 		var h = teamdata.findIndex(function (d){return d.team == home});
@@ -869,7 +870,7 @@ function processData (rows)
 		{
 			var stats = {team:away, shots:[as],corner:[acn],cross:[acr],
 			goals:[ag],pens:[ap],saves:[asv], home:[home], away:[away],date:[date],
-			venue:[venue], goalc:[hg]};
+			venue:[venue], goalc:[hg],result:[result]};
 			teamdata.unshift(stats);
 		}
 		else
@@ -885,13 +886,14 @@ function processData (rows)
 			teamdata[a].date.unshift(date);
 			teamdata[a].venue.unshift(venue);
 			teamdata[a].goalc.unshift(hg);
+			teamdata[a].result.unshift(result);
 		}
 		
 		if (h == -1)
 		{
 			var stats = {team:home, shots:[hs],corner:[hcn],cross:[hcr],
 			goals:[hg],pens:[hp],saves:[hsv], home:[home], away:[away], date:[date],
-			venue:[venue], goalc:[ag]};
+			venue:[venue], goalc:[ag],result:[result]};
 			teamdata.unshift(stats);
 		}
 		else
@@ -907,6 +909,7 @@ function processData (rows)
 			teamdata[h].date.unshift(date);
 			teamdata[h].venue.unshift(venue);		
 			teamdata[h].goalc.unshift(ag);
+			teamdata[h].result.unshift(result);
 		}	
 	}
 	return teamdata;
@@ -947,7 +950,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].shots.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].shots.slice()
 					,games:gamedets});
@@ -964,7 +967,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].corner.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].corner.slice()
 					,games:gamedets});
@@ -980,7 +983,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].cross.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].cross.slice()
 					,games:gamedets});
@@ -996,7 +999,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].goals.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].goals.slice()
 					,games:gamedets});
@@ -1012,7 +1015,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].pens.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].pens.slice()
 					,games:gamedets});
@@ -1028,7 +1031,7 @@ function genGraph (teamdata)
 						for (var t=0;t<teamdata[i].saves.length;t++)
 						{
 							gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 						}
 						teamstats.push({team:teamdata[i].team,data:teamdata[i].saves.slice()
 						,games:gamedets});
@@ -1044,7 +1047,7 @@ function genGraph (teamdata)
 					for (var t=0;t<teamdata[i].goalc.length;t++)
 					{
 						gamedets.push({home:teamdata[i].home[t],away:teamdata[i].away[t],
-						dat:teamdata[i].date[t],ven:teamdata[i].venue[t]})
+						dat:teamdata[i].date[t],ven:teamdata[i].venue[t],res:teamdata[i].result[t]})
 					}
 					teamstats.push({team:teamdata[i].team,data:teamdata[i].goalc.slice()
 					,games:gamedets});
@@ -1128,8 +1131,8 @@ function genGraph (teamdata)
 					div.transition()        
 	            	    .duration(200)      
 	            	    .style("opacity", 0.9);     
-            	    div.html("<b/>Date: </b/>" + inf[0].dat + "<br>" + "<b>Home: </b>" + inf[0].home + "<br>" + "<b>Away: </b>" + inf[0].away 
-            	    	+ "<br>" + "<b>Venue: </b>" + inf[0].ven)  
+            	    div.html("<b/>Result: </b/>" + inf[0].res + "<br>" +"<b/>Date: </b/>" + inf[0].dat + "<br>" + "<b>Home: </b>" 
+					+ inf[0].home + "<br>" + "<b>Away: </b>" + inf[0].away + "<br>" + "<b>Venue: </b>" + inf[0].ven)  
 	            	    .style("left", (d3.event.pageX) + "px")     
 	            	    .style("top", (d3.event.pageY) + "px");  
 				
