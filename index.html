@@ -13,7 +13,7 @@
 <body>
 <h1>Leicester City: An Improbable Story</h1>
 
-<p class="p_text">With four weeks left to the English Premier League season, Leicester City are in the prime position to be crowned as champions with a five point lead ahead
+<p class="p_text">With three weeks left to the English Premier League season, Leicester City are in the prime position to be crowned as champions with a seven point lead ahead
 of second place Tottenham. After just one season, Leicester City has carried itself from fighting relegation to the lower leagues of English Football to becoming
 a powerhouse topping the table. </p>
 
@@ -587,15 +587,14 @@ function update_season(season) {
 
 <h2>Defying the Odds: A Game by Game Analysis</h2>
 <p class="p_text">
-Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Below is the
-historical betting odds for Leicester City to win the Premier League title. <br>
-<br>Hover over individual nodes to see game details and stats. Click on a particular node to see that Leicester City's pass accuracy (%) and possesion (%), a 
-traditionally key indicator of performance, in that particular game compared to the median pass accuracy and possession of the last ten title winners.  
+Result after result, Leicester has convinced onlookers that the seemingly improbable might just be probable. Below are the
+historical betting odds for Leicester City to win the Premier League title following each game. A $10 bet on Leicester winning at the beginning of the season would now have a payout of $50,000! <br>
+<br>Hover over individual nodes to see game details and stats. Experts and spectators alike wonder what has driven Leicester's astounding success this season. Click on a particular node to see that Leicester City's pass accuracy (%) and possesion (%), a traditionally key indicator of performance, in that particular game compared to the median pass accuracy and possession of the last ten title winners.  
 </p>
 
-<p>In the <span class="span_emphasis_lc">'15-'16</span> season, Leicester City has had an average pass accuracy of  <span class="span_emphasis_lc">70.6%</span> and possession of  <span class="span_emphasis_lc">46.5%</span> <br>
+<p>In the <span class="span_emphasis_lc">'15-'16</span> season, Leicester City has had an median pass accuracy of  <span class="span_emphasis_lc">70.6%</span> and possession of  <span class="span_emphasis_lc">46.5%</span> <br>
 
-Over the last <span class="span_emphasis">10</span> seasons, title winners had an average pass accuracy of  <span class="span_emphasis">83.0%</span> and possession of <span class="span_emphasis">57.9%</span> 
+Over the last <span class="span_emphasis">10</span> seasons, title winners had an median pass accuracy of  <span class="span_emphasis">83.0%</span> and possession of <span class="span_emphasis">57.9%</span> 
 </p>
 
 <div id="odds"></div>
@@ -783,9 +782,13 @@ Source: http://www.bbc.com/sport/football/35553082</p>
 <p class="p_text">
 A fairy tale of a story, no one can seem to explain the sheer dominance and rise of Leicester City. Does taking a look at straight
 metrics help shine light on the club's incredible success? Take a look for yourself below. Hover over nodes for additional game details.
-<br>
-<br>Ultimately perhaps a combination of sheer determination, tactical genius, and a bit of luck have carried Leicester to a historic season. This season, 
-data just might not tell the whole story. 
+<br><br>
+Ultimately perhaps a combination of sheer determination, tactical genius, and a bit of luck have carried Leicester to a historic season.
+
+Traditional metrics of performance simply don't seem to capture Leicester City's success. If anything, they suggest that
+Leicester has brought a completely different style of soccer to the English League that is contradictory to traditional performance measures. 
+This season, data just might not tell the whole story.
+
 </p>
 <br><br>
 <div class="container">
@@ -1174,5 +1177,6 @@ function genGraph (teamdata)
 d3.selectAll("#metricsel").on("change", function(){genGraph(data)});
 d3.selectAll("input").on("change", function(){genGraph(data)});
 </script>
+
 </body>
 </html>	
